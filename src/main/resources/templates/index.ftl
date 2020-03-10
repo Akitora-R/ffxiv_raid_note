@@ -171,6 +171,8 @@
                 ret=p;
             }
         });
+        console.log(data);
+        console.log(ret);
         return ret;
     }
 
@@ -297,7 +299,7 @@
         $.ajax({
             type: "POST",
             url: "ajaxGetPlayerMis",
-            data: {player:JSON.stringify(tempPlayer)},
+            data: {playerJson:JSON.stringify(tempPlayer)},
             dataType: "json",
             success: function (resp) {
                 console.log(resp)
@@ -481,7 +483,28 @@
     </div>
 
     <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time" role="tab" aria-controls="manage-time" aria-selected="true">玩家得点</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="row">
+                                <div class="col-12" id="charts">
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

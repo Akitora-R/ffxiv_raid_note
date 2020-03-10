@@ -70,10 +70,7 @@ public class IndexCtl {
             e.printStackTrace();
         }
         assert player != null;
-        logger.info(player.toString());
-        List<Mistake> mistakes = this.mistakeService.selectMistakeByPlayer(player);
-        System.out.println(mistakes);
-        return null;
+        return this.mistakeService.selectMistakeByPlayer(player);
     }
 
     @ResponseBody
