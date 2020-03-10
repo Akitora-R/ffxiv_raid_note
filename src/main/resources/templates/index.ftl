@@ -118,6 +118,9 @@
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             pointChart.resize();
         });
+        $(window).resize(function() {
+            pointChart.resize();
+        });
         //模态框关闭时清空暂存玩家和暂存点数
         $('#pointModal').on('hidden.bs.modal', function (e) {
             tempPlayer=undefined;
@@ -496,7 +499,7 @@
                     <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
                         <div class="tab-content" id="pills-tabContent">
                             <div class="row">
-                                <div class="col-12" id="charts">
+                                <div class="col-12" id="charts" style="height: 20rem">
 
                                 </div>
                             </div>
