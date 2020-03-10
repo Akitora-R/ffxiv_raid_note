@@ -164,7 +164,7 @@
         tempPlayer=currPlayer;
         $("#remark").val("");
         $("#pointModalTitle").text(currPlayer.name);
-        getPlayMis();
+        listPlayMis();
     }
 
     function getPlayerByPos(pos) {
@@ -298,14 +298,14 @@
         refreshTodayTime(tempMill);
     }
 
-    function getPlayMis() {
+    function listPlayMis() {
         $.ajax({
             type: "POST",
             url: "ajaxGetPlayerMis",
             data: {playerJson:JSON.stringify(tempPlayer)},
             dataType: "json",
             success: function (resp) {
-                console.log(resp)
+                console.log(resp);
             }
         });
     }
