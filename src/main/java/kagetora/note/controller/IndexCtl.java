@@ -17,9 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class IndexCtl {
@@ -91,6 +89,13 @@ public class IndexCtl {
         ret.put("today",timerService.getTodayMillisecond());
         ret.put("total",timerService.getTotalMillisecond());
         return ret;
+    }
+
+    @ResponseBody
+    @RequestMapping("/ajaxDeleteMis")
+    public Object ajaxDeleteMis(int id){
+        mistakeService.deleteById(id);
+        return true;
     }
 
     @Autowired

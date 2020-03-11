@@ -2,10 +2,7 @@ package kagetora.note.dao;
 
 import kagetora.note.entity.Mistake;
 import kagetora.note.entity.Player;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +18,7 @@ public interface MistakeMapper {
     @Insert("INSERT INTO mistake(player_id,p1,p2,p3,p4,log_time,remark) VALUES(#{playerId},#{p1},#{p2},#{p3},#{p4},#{logTime},#{remark})")
     @Options(useGeneratedKeys = true,keyProperty="id")
     int insertMistake(Mistake mistake);
+
+    @Delete("DELETE FROM mistake WHERE id = #{id}")
+    int deleteById(int id);
 }

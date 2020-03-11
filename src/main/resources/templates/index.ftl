@@ -299,17 +299,47 @@
     }
 
     function listPlayMis() {
+        let card=`
+<div class="row detailCardMark">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">[[title]]</h5>
+                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>
+                <p class="card-text">[[text]]</p>
+                <a href="javascript:void(0)" onclick="ajaxDeleteMis([[id]])" class="card-link">删除这条记录</a>
+            </div>
+        </div>
+    </div>
+</div>`;
+        let modalBody=$("#modalBody");
         $.ajax({
             type: "POST",
             url: "ajaxGetPlayerMis",
             data: {playerJson:JSON.stringify(tempPlayer)},
             dataType: "json",
             success: function (resp) {
-                console.log(resp);
+                //通过标记移除
+                $(".detailCardMark").remove();
+                $.each(resp,function (i,v) {
+                    let miss=v.p1+" "+v.p2+" "+v.p3+" "+v.p4;
+                    modalBody.append(card.replace("[[title]]",miss).replace("[[subtitle]]",v.logTime).replace("[[text]]",v.remark).replace("[[id]]",v.id));
+                });
             }
         });
     }
 
+    function ajaxDeleteMis(id) {
+        $.ajax({
+            type:"POST",
+            url:"ajaxDeleteMis",
+            data:{id:id},
+            dataType:"json",
+            success:function (resp) {
+                listPlayMis();
+            }
+        });
+    }
 </script>
 
 <body>
@@ -523,7 +553,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalBody">
                 <div class="row">
                     <div class="col-3">
                         <h2>P1</h2>
@@ -567,15 +597,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                123123
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<#--                <div class="row">-->
+<#--                    <div class="col-12">-->
+<#--                        <div class="card">-->
+<#--                            <div class="card-body">-->
+<#--                                <h5 class="card-title">[[title]]</h5>-->
+<#--                                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>-->
+<#--                                <p class="card-text">[[text]]</p>-->
+<#--                                <a href="#" class="card-link">[[link]]</a>-->
+<#--                            </div>-->
+<#--                        </div>-->
+<#--                    </div>-->
+<#--                </div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>

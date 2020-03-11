@@ -22,7 +22,10 @@ public class MistakeService {
         return this.mistakeMapper.selectMistakeByPlayer(player);
     }
 
-
+    @Transactional
+    public int deleteById(int id){
+        return this.mistakeMapper.deleteById(id);
+    }
 
     @Autowired
     public MistakeService(MistakeMapper mistakeMapper) {
