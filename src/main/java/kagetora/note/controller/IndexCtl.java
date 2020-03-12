@@ -1,6 +1,7 @@
 package kagetora.note.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kagetora.note.entity.Mistake;
 import kagetora.note.entity.Player;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -100,15 +103,19 @@ public class IndexCtl {
         return true;
     }
 
-    @RequestMapping("/updateName")
-    public String updateName(Model model, HttpServletRequest req){
-        Map<String, String[]> map = req.getParameterMap();
+    @ResponseBody
+    @RequestMapping("/ajaxUpdateName")
+    public Object ajaxUpdateName(String data) {
+        logger.info(data);
+        List<Map<String, String>> value = null;
         try {
-            logger.info(mapper.writeValueAsString(map));
+            value = mapper.readValue(data, new TypeReference<>() {});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return index(model);
+        assert value != null;
+        value.forEach((var i)-> playerService.updatePlayerNameByPosition(i.get("pos"),i.get("name")));
+        return true;
     }
 
     @Autowired

@@ -23,4 +23,7 @@ public interface PlayerMapper {
 
     @Select("SELECT SUM(p1+p2+p3+p4) FROM mistake LEFT JOIN player ON mistake.player_id=player.id WHERE is_active=true")
     Integer getTotalPoint();
+
+    @Update("UPDATE player SET name = #{newName} WHERE position = #{pos}")
+    void updatePlayerNameByPosition(String pos, String newName);
 }

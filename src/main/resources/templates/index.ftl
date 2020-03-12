@@ -32,7 +32,7 @@
     }
     */
 
-    .btn{
+    .btn {
         margin: 5px;
     }
 </style>
@@ -43,17 +43,17 @@
     let tempMistake;//临时失误表
     let timerStartPoint;//计时开始点
     let timerEndPoint;//计时结束点
-    let timerLogs=[];//[{being,end}]
-    let totalTimeMill=${totalTimeMill};//总开荒时间
-    let todayTimeMill=${todayTimeMill};//今天开荒时间
+    let timerLogs = [];//[{being,end}]
+    let totalTimeMill =${totalTimeMill};//总开荒时间
+    let todayTimeMill =${todayTimeMill};//今天开荒时间
     let todayTimeInterval;//更新今天开荒时间的定时器
-    let pointChartOption= {//得点图配置对象
+    let pointChartOption = {//得点图配置对象
         title: {
             text: '好人榜'
         },
         tooltip: {},
         legend: {
-            data:['好人值']
+            data: ['好人值']
         },
         xAxis: {
             data: []
@@ -65,20 +65,22 @@
             data: []
         }]
     };
-    function Player(){//参考后台的Player
-        this.id=undefined;
-        this.name=undefined;
-        this.position=undefined;
-        this.active=false;
-        this.mistake=[];
-        this.getTotalPoint=function () {
-            let ret=0;
-            $.each(this.mistake,function (i,m) {
-                ret+=m.p1+m.p2+m.p3+m.p4;
+
+    function Player() {//参考后台的Player
+        this.id = undefined;
+        this.name = undefined;
+        this.position = undefined;
+        this.active = false;
+        this.mistake = [];
+        this.getTotalPoint = function () {
+            let ret = 0;
+            $.each(this.mistake, function (i, m) {
+                ret += m.p1 + m.p2 + m.p3 + m.p4;
             });
             return ret;
         }
     }
+
     function Mistake() {//参考后台的Mistake
         this.id = undefined;
         this.playerId = undefined;
@@ -110,16 +112,16 @@
         this.subPointByPhase = function (phase) {
             switch (phase) {
                 case 1:
-                    this.p1 -= this.p1>0?1:0;
+                    this.p1 -= this.p1 > 0 ? 1 : 0;
                     break;
                 case 2:
-                    this.p2 -= this.p2>0?1:0;
+                    this.p2 -= this.p2 > 0 ? 1 : 0;
                     break;
                 case 3:
-                    this.p3 -= this.p3>0?1:0;
+                    this.p3 -= this.p3 > 0 ? 1 : 0;
                     break;
                 case 4:
-                    this.p4 -= this.p4>0?1:0;
+                    this.p4 -= this.p4 > 0 ? 1 : 0;
                     break;
             }
         }
@@ -128,20 +130,20 @@
     $(function () {
         $("#timeCost").text(calTimeString(totalTimeMill));
         $("#todayTime").text(calTimeString(todayTimeMill));
-        pointChart=echarts.init($("#charts")[0]);
+        pointChart = echarts.init($("#charts")[0]);
         initNoteData();
 
         //解决tab切换图表不显示
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             pointChart.resize();
         });
-        $(window).resize(function() {
+        $(window).resize(function () {
             pointChart.resize();
         });
         //模态框关闭时清空暂存玩家和暂存点数
         $('#pointModal').on('hidden.bs.modal', function (e) {
-            tempPlayer=undefined;
-            tempMistake=undefined;
+            tempPlayer = undefined;
+            tempMistake = undefined;
             $("[id^='pointShow']").text("0");
         });
     });
@@ -165,27 +167,27 @@
     }
 
     //加点至临时表
-    function addPoint(phase){
-        if (tempMistake===undefined){
-            tempMistake=new Mistake();
-            tempMistake.playerId=tempPlayer.id;
-            tempMistake.logTime=new Date().toJSON();
-            console.log("init Mistake: "+JSON.stringify(tempMistake));
+    function addPoint(phase) {
+        if (tempMistake === undefined) {
+            tempMistake = new Mistake();
+            tempMistake.playerId = tempPlayer.id;
+            tempMistake.logTime = new Date().toJSON();
+            console.log("init Mistake: " + JSON.stringify(tempMistake));
         }
         tempMistake.addPointByPhase(phase);
-        console.log("current total point: "+tempMistake.getTotalPoint());
-        $("#pointShow_"+phase).text(tempMistake["p"+phase]);
+        console.log("current total point: " + tempMistake.getTotalPoint());
+        $("#pointShow_" + phase).text(tempMistake["p" + phase]);
     }
 
     function subPoint(phase) {
-        if (tempMistake===undefined){
+        if (tempMistake === undefined) {
             return;
         }
         tempMistake.subPointByPhase(phase);
-        console.log("current total point: "+tempMistake.getTotalPoint());
-        $("#pointShow_"+phase).text(tempMistake["p"+phase]);
-        if (tempMistake.getTotalPoint()<=0){
-            tempMistake=undefined;
+        console.log("current total point: " + tempMistake.getTotalPoint());
+        $("#pointShow_" + phase).text(tempMistake["p" + phase]);
+        if (tempMistake.getTotalPoint() <= 0) {
+            tempMistake = undefined;
             console.log("deleted.");
         }
     }
@@ -193,18 +195,18 @@
     //当打开模态框时更新当前选中玩家数据
     function setTempPlayer(pos) {
         // let newPlayer=new Player();
-        let currPlayer=getPlayerByPos(pos);
-        tempPlayer=currPlayer;
+        let currPlayer = getPlayerByPos(pos);
+        tempPlayer = currPlayer;
         $("#remark").val("");
         $("#pointModalTitle").text(currPlayer.name);
         listPlayMis();
     }
 
     function getPlayerByPos(pos) {
-        let ret=undefined;
-        $.each(data,function (i,p) {
-            if (p.position===pos){
-                ret=p;
+        let ret = undefined;
+        $.each(data, function (i, p) {
+            if (p.position === pos) {
+                ret = p;
             }
         });
         console.log(data);
@@ -214,101 +216,103 @@
 
     //获取该玩家的所有点数
     function getTotalPoint(player) {
-        let ret=0;
-        $.each(player.mistake,function (i,v) {
-            ret += v.p1+v.p2+v.p3+v.p4;
+        let ret = 0;
+        $.each(player.mistake, function (i, v) {
+            ret += v.p1 + v.p2 + v.p3 + v.p4;
         });
         return ret;
     }
 
     //从总本(浏览器副本)设置图表json的数据
     function setPointChartData() {
-        pointChartOption.xAxis.data=[];
-        pointChartOption.series[0].data=[];
-        $.each(data,function (i,p) {
+        pointChartOption.xAxis.data = [];
+        pointChartOption.series[0].data = [];
+        $.each(data, function (i, p) {
             pointChartOption.xAxis.data.push(p.name);
             pointChartOption.series[0].data.push(getTotalPoint(p));
         });
     }
 
     function saveNote() {
-        if (tempMistake===undefined){
+        if (tempMistake === undefined) {
             console.log("empty mistake,return");
             return;
         }
-        let remark=$("#remark");
-        tempMistake.remark=remark.val();
+        let remark = $("#remark");
+        tempMistake.remark = remark.val();
         $.ajax({
             type: "POST",
             url: "ajaxSetMis",
-            data: {mis:JSON.stringify(tempMistake)},
+            data: {mis: JSON.stringify(tempMistake)},
             dataType: "json",
             success: function (resp) {
-                tempMistake=undefined;
-                tempPlayer=undefined;
+                tempMistake = undefined;
+                tempPlayer = undefined;
                 initNoteData();
             }
         });
     }
 
     function timerStart() {
-        let startBtn=$("#timerStart");
-        let pauseBtn=$("#timerPause");
-        timerStartPoint=new Date();
+        let startBtn = $("#timerStart");
+        let pauseBtn = $("#timerPause");
+        timerStartPoint = new Date();
         startBtn.addClass("disabled");
-        startBtn.attr("disabled","disabled");
+        startBtn.attr("disabled", "disabled");
         startBtn.html(
             '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>' +
             '计时中...');
         pauseBtn.removeAttr("disabled");
         pauseBtn.removeClass("disabled");
         pauseBtn.html("暂停");
-        todayTimeInterval=setInterval(updateTodayTime,1000);
+        todayTimeInterval = setInterval(updateTodayTime, 1000);
     }
 
     function timerPause() {
-        let startBtn=$("#timerStart");
-        let pauseBtn=$("#timerPause");
+        let startBtn = $("#timerStart");
+        let pauseBtn = $("#timerPause");
         startBtn.removeAttr("disabled");
         startBtn.removeClass("disabled");
         startBtn.html("开始");
         pauseBtn.addClass("disabled");
-        pauseBtn.attr("disabled","disabled");
+        pauseBtn.attr("disabled", "disabled");
         pauseBtn.html("未开始");
-        timerEndPoint=new Date();
-        timerLogs.push({begin:timerStartPoint.getTime(),end:timerEndPoint.getTime()});
-        timerStartPoint=undefined;
-        timerEndPoint=undefined;
+        timerEndPoint = new Date();
+        timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
+        timerStartPoint = undefined;
+        timerEndPoint = undefined;
         clearInterval(todayTimeInterval);
     }
 
     function timerReset() {
-        let startBtn=$("#timerStart");
-        let pauseBtn=$("#timerPause");
+        let startBtn = $("#timerStart");
+        let pauseBtn = $("#timerPause");
         startBtn.removeAttr("disabled");
         startBtn.removeClass("disabled");
         startBtn.html("开始");
         pauseBtn.addClass("disabled");
-        pauseBtn.attr("disabled","disabled");
+        pauseBtn.attr("disabled", "disabled");
         pauseBtn.html("未开始");
-        timerLogs=[];
-        timerStartPoint=undefined;
-        timerEndPoint=undefined;
+        timerLogs = [];
+        timerStartPoint = undefined;
+        timerEndPoint = undefined;
         clearInterval(todayTimeInterval);
     }
 
     function timerSave() {
-        if (timerLogs.length===0){return}
+        if (timerLogs.length === 0) {
+            return
+        }
         $.ajax({
             type: "POST",
             url: "ajaxSaveTimer",
-            data: {timerLogs:JSON.stringify(timerLogs)},
+            data: {timerLogs: JSON.stringify(timerLogs)},
             dataType: "json",
             success: function (resp) {
                 clearInterval(todayTimeInterval);
-                totalTimeMill=resp.total;
-                todayTimeMill=resp.today;
-                timerLogs=[];
+                totalTimeMill = resp.total;
+                todayTimeMill = resp.today;
+                timerLogs = [];
             }
         });
     }
@@ -317,10 +321,10 @@
         let baseSecond = 1000;
         let baseMinute = 1000 * 60;
         let baseHour = 1000 * 60 * 60;
-        let h = parseInt(String(timeMill/baseHour));
-        let m = parseInt(String(timeMill%baseHour/baseMinute));
-        let s = String(timeMill%baseMinute/baseSecond);
-        return h+" Hour "+m+" Min "+s+" Sec";
+        let h = parseInt(String(timeMill / baseHour));
+        let m = parseInt(String(timeMill % baseHour / baseMinute));
+        let s = String(timeMill % baseMinute / baseSecond);
+        return h + " Hour " + m + " Min " + s + " Sec";
     }
 
     function refreshTodayTime(timeMill) {
@@ -328,15 +332,15 @@
     }
 
     function updateTodayTime() {
-        let tempMill=new Date() - timerStartPoint + todayTimeMill;
-        $.each(timerLogs,function (i,v) {
-            tempMill+=v.end-v.begin;
+        let tempMill = new Date() - timerStartPoint + todayTimeMill;
+        $.each(timerLogs, function (i, v) {
+            tempMill += v.end - v.begin;
         });
         refreshTodayTime(tempMill);
     }
 
     function listPlayMis() {
-        let card=`
+        let card = `
 <div class="row detailCardMark">
     <div class="col-12">
         <div class="card">
@@ -349,18 +353,18 @@
         </div>
     </div>
 </div>`;
-        let modalBody=$("#modalBody");
+        let modalBody = $("#modalBody");
         $.ajax({
             type: "POST",
             url: "ajaxGetPlayerMis",
-            data: {playerJson:JSON.stringify(tempPlayer)},
+            data: {playerJson: JSON.stringify(tempPlayer)},
             dataType: "json",
             success: function (resp) {
                 //通过标记移除
                 $(".detailCardMark").remove();
-                $.each(resp,function (i,v) {
-                    let miss=v.p1+" "+v.p2+" "+v.p3+" "+v.p4;
-                    modalBody.append(card.replace("[[title]]",miss).replace("[[subtitle]]",v.logTime).replace("[[text]]",v.remark).replace("[[id]]",v.id));
+                $.each(resp, function (i, v) {
+                    let miss = v.p1 + " " + v.p2 + " " + v.p3 + " " + v.p4;
+                    modalBody.append(card.replace("[[title]]", miss).replace("[[subtitle]]", v.logTime).replace("[[text]]", v.remark).replace("[[id]]", v.id));
                 });
             }
         });
@@ -368,13 +372,32 @@
 
     function ajaxDeleteMis(id) {
         $.ajax({
-            type:"POST",
-            url:"ajaxDeleteMis",
-            data:{id:id},
-            dataType:"json",
-            success:function (resp) {
+            type: "POST",
+            url: "ajaxDeleteMis",
+            data: {id: id},
+            dataType: "json",
+            success: function (resp) {
                 listPlayMis();
                 initNoteData();
+            }
+        });
+    }
+
+    function ajaxUpdatePlayerName() {
+        let data=[];
+        let names=$("[id^='PlayerName_']");
+        $.each(names,function (i,v) {
+            data.push({pos:$(v).attr("id").split("_")[1],name:$(v).val()});
+        });
+        $.ajax({
+            type: "POST",
+            url: "ajaxUpdateName",
+            data: {data:JSON.stringify(data)},
+            dataType: "json",
+            success: function (resp) {
+                if(resp){
+                    location.reload();
+                }
             }
         });
     }
@@ -511,13 +534,16 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time" role="tab" aria-controls="manage-time" aria-selected="true">时间</a>
+                                <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time"
+                                   role="tab" aria-controls="manage-time" aria-selected="true">时间</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="manage-progress-tab" data-toggle="pill" href="#manage-progress" role="tab" aria-controls="manage-progress" aria-selected="false">进度</a>
+                                <a class="nav-link" id="manage-progress-tab" data-toggle="pill" href="#manage-progress"
+                                   role="tab" aria-controls="manage-progress" aria-selected="false">进度</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="manage-player-tab" data-toggle="pill" href="#manage-player" role="tab" aria-controls="manage-player" aria-selected="false">玩家</a>
+                                <a class="nav-link" id="manage-player-tab" data-toggle="pill" href="#manage-player"
+                                   role="tab" aria-controls="manage-player" aria-selected="false">玩家</a>
                             </li>
                         </ul>
                     </div>
@@ -525,7 +551,8 @@
                         <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
 
                             <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="manage-time" role="tabpanel" aria-labelledby="manage-time-tab">
+                                <div class="tab-pane fade show active" id="manage-time" role="tabpanel"
+                                     aria-labelledby="manage-time-tab">
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <small>今日已累计开荒:</small>
@@ -533,107 +560,139 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-3"><button id="timerStart" onclick="timerStart()" class="btn btn-block btn-outline-success">开始</button></div>
-                                        <div class="col-sm-3"><button id="timerPause" onclick="timerPause()" class="btn btn-block btn-outline-warning disabled" disabled>未开始</button></div>
-                                        <div class="col-sm-3"><button id="timerReset" onclick="timerReset()" class="btn btn-block btn-outline-danger">重置</button></div>
-                                        <div class="col-sm-3"><button id="timerSave" onclick="timerSave()" class="btn btn-block btn-outline-dark">保存</button></div>
+                                        <div class="col-sm-3">
+                                            <button id="timerStart" onclick="timerStart()"
+                                                    class="btn btn-block btn-outline-success">开始
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button id="timerPause" onclick="timerPause()"
+                                                    class="btn btn-block btn-outline-warning disabled" disabled>未开始
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button id="timerReset" onclick="timerReset()"
+                                                    class="btn btn-block btn-outline-danger">重置
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button id="timerSave" onclick="timerSave()"
+                                                    class="btn btn-block btn-outline-dark">保存
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="manage-progress" role="tabpanel" aria-labelledby="manage-progress-tab">
+                                <div class="tab-pane fade" id="manage-progress" role="tabpanel"
+                                     aria-labelledby="manage-progress-tab">
 
                                 </div>
-                                <div class="tab-pane fade" id="manage-player" role="tabpanel" aria-labelledby="manage-player-tab">
-                                    <form action="/updateName" method="post">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-primary rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">T1</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['T1']}" name="T1" aria-label="name">
+                                <div class="tab-pane fade" id="manage-player" role="tabpanel"
+                                     aria-labelledby="manage-player-tab">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-primary rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">T1</span>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-primary rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">T2</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['T2']}" name="T1" aria-label="name">
-                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['T1']}" id="PlayerName_T1"
+                                                               aria-label="name">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-success rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">H1</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['H1']}" name="H1" aria-label="name">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-primary rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">T2</span>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-success rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">H2</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['H2']}" name="H2" aria-label="name">
-                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['T2']}" id="PlayerName_T2"
+                                                               aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-danger rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">D1</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['D1']}" name="D1" aria-label="name">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-success rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">H1</span>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-danger rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">D2</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['D2']}" name="D2" aria-label="name">
-                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['H1']}" id="PlayerName_H1"
+                                                               aria-label="name">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-danger rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">D3</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['D3']}" name="D3" aria-label="name">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-success rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">H2</span>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="input-group mb-3 border border-danger rounded">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">D4</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" placeholder="${nameMap['D4']}" name="D4" aria-label="name">
-                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['H2']}" id="PlayerName_H2"
+                                                               aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <input type="submit" class="btn btn-info btn-block">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-danger rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">D1</span>
+                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['D1']}" id="PlayerName_D1"
+                                                               aria-label="name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-danger rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">D2</span>
+                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['D2']}" id="PlayerName_D2"
+                                                               aria-label="name">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-danger rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">D3</span>
+                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['D3']}" id="PlayerName_D3"
+                                                               aria-label="name">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="input-group mb-3 border border-danger rounded">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">D4</span>
+                                                        </div>
+                                                        <input type="text" class="form-control"
+                                                               placeholder="${nameMap['D4']}" id="PlayerName_D4"
+                                                               aria-label="name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button onclick="ajaxUpdatePlayerName()" class="btn btn-info btn-block">保存</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -649,7 +708,8 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time" role="tab" aria-controls="manage-time" aria-selected="true">玩家得点</a>
+                            <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time"
+                               role="tab" aria-controls="manage-time" aria-selected="true">玩家得点</a>
                         </li>
                     </ul>
                 </div>
@@ -672,7 +732,8 @@
 
 </html>
 <!-- Modal -->
-<div class="modal fade" id="pointModal" tabindex="-1" role="dialog" aria-labelledby="pointModalTitle" aria-hidden="true">
+<div class="modal fade" id="pointModal" tabindex="-1" role="dialog" aria-labelledby="pointModalTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -737,22 +798,23 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">备注</span>
                             </div>
-                            <textarea class="form-control" aria-label="remark" id="remark" placeholder="看看你都干了些啥好事"></textarea>
+                            <textarea class="form-control" aria-label="remark" id="remark"
+                                      placeholder="看看你都干了些啥好事"></textarea>
                         </div>
                     </div>
                 </div>
-<#--                <div class="row">-->
-<#--                    <div class="col-12">-->
-<#--                        <div class="card">-->
-<#--                            <div class="card-body">-->
-<#--                                <h5 class="card-title">[[title]]</h5>-->
-<#--                                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>-->
-<#--                                <p class="card-text">[[text]]</p>-->
-<#--                                <a href="#" class="card-link">[[link]]</a>-->
-<#--                            </div>-->
-<#--                        </div>-->
-<#--                    </div>-->
-<#--                </div>-->
+                <#--                <div class="row">-->
+                <#--                    <div class="col-12">-->
+                <#--                        <div class="card">-->
+                <#--                            <div class="card-body">-->
+                <#--                                <h5 class="card-title">[[title]]</h5>-->
+                <#--                                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>-->
+                <#--                                <p class="card-text">[[text]]</p>-->
+                <#--                                <a href="#" class="card-link">[[link]]</a>-->
+                <#--                            </div>-->
+                <#--                        </div>-->
+                <#--                    </div>-->
+                <#--                </div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
