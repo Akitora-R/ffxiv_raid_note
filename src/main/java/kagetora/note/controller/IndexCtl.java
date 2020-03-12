@@ -17,7 +17,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class IndexCtl {
@@ -96,6 +98,17 @@ public class IndexCtl {
     public Object ajaxDeleteMis(int id){
         mistakeService.deleteById(id);
         return true;
+    }
+
+    @RequestMapping("/updateName")
+    public String updateName(Model model, HttpServletRequest req){
+        Map<String, String[]> map = req.getParameterMap();
+        try {
+            logger.info(mapper.writeValueAsString(map));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return index(model);
     }
 
     @Autowired

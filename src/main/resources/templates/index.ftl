@@ -142,7 +142,8 @@
         $('#pointModal').on('hidden.bs.modal', function (e) {
             tempPlayer=undefined;
             tempMistake=undefined;
-        })
+            $("[id^='pointShow']").text("0");
+        });
     });
 
 
@@ -542,7 +543,97 @@
 
                                 </div>
                                 <div class="tab-pane fade" id="manage-player" role="tabpanel" aria-labelledby="manage-player-tab">
-
+                                    <form action="/updateName" method="post">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-primary rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">T1</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['T1']}" name="T1" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-primary rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">T2</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['T2']}" name="T1" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-success rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">H1</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['H1']}" name="H1" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-success rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">H2</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['H2']}" name="H2" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-danger rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">D1</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['D1']}" name="D1" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-danger rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">D2</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['D2']}" name="D2" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-danger rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">D3</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['D3']}" name="D3" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group mb-3 border border-danger rounded">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">D4</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" placeholder="${nameMap['D4']}" name="D4" aria-label="name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="submit" class="btn btn-info btn-block">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
