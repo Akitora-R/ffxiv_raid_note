@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<#--<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
@@ -105,6 +106,22 @@
                     this.p4 += 1;
                     break;
             }
+        };
+        this.subPointByPhase = function (phase) {
+            switch (phase) {
+                case 1:
+                    this.p1 -= this.p1>0?1:0;
+                    break;
+                case 2:
+                    this.p2 -= this.p2>0?1:0;
+                    break;
+                case 3:
+                    this.p3 -= this.p3>0?1:0;
+                    break;
+                case 4:
+                    this.p4 -= this.p4>0?1:0;
+                    break;
+            }
         }
     }
 
@@ -150,11 +167,26 @@
     function addPoint(phase){
         if (tempMistake===undefined){
             tempMistake=new Mistake();
+            tempMistake.playerId=tempPlayer.id;
+            tempMistake.logTime=new Date().toJSON();
+            console.log("init Mistake: "+JSON.stringify(tempMistake));
         }
         tempMistake.addPointByPhase(phase);
-        tempMistake.playerId=tempPlayer.id;
-        tempMistake.logTime=new Date().toJSON();
-        console.log(tempMistake);
+        console.log("current total point: "+tempMistake.getTotalPoint());
+        $("#pointShow_"+phase).text(tempMistake["p"+phase]);
+    }
+
+    function subPoint(phase) {
+        if (tempMistake===undefined){
+            return;
+        }
+        tempMistake.subPointByPhase(phase);
+        console.log("current total point: "+tempMistake.getTotalPoint());
+        $("#pointShow_"+phase).text(tempMistake["p"+phase]);
+        if (tempMistake.getTotalPoint()<=0){
+            tempMistake=undefined;
+            console.log("deleted.");
+        }
     }
 
     //当打开模态框时更新当前选中玩家数据
@@ -199,6 +231,10 @@
     }
 
     function saveNote() {
+        if (tempMistake===undefined){
+            console.log("empty mistake,return");
+            return;
+        }
         let remark=$("#remark");
         tempMistake.remark=remark.val();
         $.ajax({
@@ -337,6 +373,7 @@
             dataType:"json",
             success:function (resp) {
                 listPlayMis();
+                initNoteData();
             }
         });
     }
@@ -555,36 +592,52 @@
             </div>
             <div class="modal-body" id="modalBody">
                 <div class="row">
-                    <div class="col-3">
-                        <h2>P1</h2>
-                    </div>
+                    <label class="col-3 col-form-label col-form-label-lg">P1</label>
                     <div class="col-9">
-                        <button class="btn btn-block btn-outline-secondary" onclick="addPoint(1)">喜加一</button>
+                        <div class="btn-group d-flex" role="group">
+                            <button class="btn btn-outline-primary w-100" onclick="addPoint(1)">
+                                喜加一
+                                <span class="badge badge-light" id="pointShow_1">0</span>
+                            </button>
+                            <button class="btn btn-outline-secondary w-50" onclick="subPoint(1)">手滑了</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-3">
-                        <h2>P2</h2>
-                    </div>
+                    <label class="col-3 col-form-label col-form-label-lg">P2</label>
                     <div class="col-9">
-                        <button class="btn btn-block btn-outline-secondary" onclick="addPoint(2)">喜加一</button>
+                        <div class="btn-group d-flex" role="group">
+                            <button class="btn btn-outline-primary w-100" onclick="addPoint(2)">
+                                喜加一
+                                <span class="badge badge-light" id="pointShow_2">0</span>
+                            </button>
+                            <button class="btn btn-outline-secondary w-50" onclick="subPoint(2)">手滑了</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
-                        <h2>P3</h2>
-                    </div>
+                    <label class="col-3 col-form-label col-form-label-lg">P3</label>
                     <div class="col-9">
-                        <button class="btn btn-block btn-outline-secondary" onclick="addPoint(3)">喜加一</button>
+                        <div class="btn-group d-flex" role="group">
+                            <button class="btn btn-outline-primary w-100" onclick="addPoint(3)">
+                                喜加一
+                                <span class="badge badge-light" id="pointShow_3">0</span>
+                            </button>
+                            <button class="btn btn-outline-secondary w-50" onclick="subPoint(3)">手滑了</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3">
-                        <h2>P4</h2>
-                    </div>
+                    <label class="col-3 col-form-label col-form-label-lg">P4</label>
                     <div class="col-9">
-                        <button class="btn btn-block btn-outline-secondary" onclick="addPoint(4)">喜加一</button>
+                        <div class="btn-group d-flex" role="group">
+                            <button class="btn btn-outline-primary w-100" onclick="addPoint(4)">
+                                喜加一
+                                <span class="badge badge-light" id="pointShow_4">0</span>
+                            </button>
+                            <button class="btn btn-outline-secondary w-50" onclick="subPoint(4)">手滑了</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
