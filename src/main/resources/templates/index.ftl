@@ -597,7 +597,7 @@
                         <div class="btn-group d-flex" role="group">
                             <button class="btn btn-outline-primary w-100" onclick="addPoint(1)">
                                 喜加一
-                                <span class="badge badge-light" id="pointShow_1">0</span>
+                                <span class="badge badge-dark" id="pointShow_1">0</span>
                             </button>
                             <button class="btn btn-outline-secondary w-50" onclick="subPoint(1)">手滑了</button>
                         </div>
@@ -610,7 +610,7 @@
                         <div class="btn-group d-flex" role="group">
                             <button class="btn btn-outline-primary w-100" onclick="addPoint(2)">
                                 喜加一
-                                <span class="badge badge-light" id="pointShow_2">0</span>
+                                <span class="badge badge-dark" id="pointShow_2">0</span>
                             </button>
                             <button class="btn btn-outline-secondary w-50" onclick="subPoint(2)">手滑了</button>
                         </div>
@@ -622,7 +622,7 @@
                         <div class="btn-group d-flex" role="group">
                             <button class="btn btn-outline-primary w-100" onclick="addPoint(3)">
                                 喜加一
-                                <span class="badge badge-light" id="pointShow_3">0</span>
+                                <span class="badge badge-dark" id="pointShow_3">0</span>
                             </button>
                             <button class="btn btn-outline-secondary w-50" onclick="subPoint(3)">手滑了</button>
                         </div>
@@ -634,7 +634,7 @@
                         <div class="btn-group d-flex" role="group">
                             <button class="btn btn-outline-primary w-100" onclick="addPoint(4)">
                                 喜加一
-                                <span class="badge badge-light" id="pointShow_4">0</span>
+                                <span class="badge badge-dark" id="pointShow_4">0</span>
                             </button>
                             <button class="btn btn-outline-secondary w-50" onclick="subPoint(4)">手滑了</button>
                         </div>
