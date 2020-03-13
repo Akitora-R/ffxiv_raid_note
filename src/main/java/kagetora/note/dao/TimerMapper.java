@@ -1,6 +1,7 @@
 package kagetora.note.dao;
 
 import kagetora.note.entity.Timer;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,7 @@ public interface TimerMapper {
 
     @Select("SELECT * FROM timer WHERE begin>= CURDATE()")
     List<Timer> selectTodayTimer();
+
+    @Delete("DELETE FROM timer")
+    void deleteAllTimer();
 }

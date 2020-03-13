@@ -14,7 +14,7 @@ public interface PlayerMapper {
     @ResultMap("playerMap")
     Player selectPlayerById(int id);
 
-    @Select("SELECT * FROM player")
+    @Select("SELECT * FROM player WHERE is_active = 1")
     @Results(id = "playerMap",value = {
             @Result(property = "id",column = "id"),
             @Result(property = "mistake",column = "id",many = @Many(select = "kagetora.note.dao.MistakeMapper.selectMistakeByPlayer"))
@@ -24,6 +24,7 @@ public interface PlayerMapper {
     @Select("SELECT SUM(p1+p2+p3+p4) FROM mistake LEFT JOIN player ON mistake.player_id=player.id WHERE is_active=true")
     Integer getTotalPoint();
 
-    @Update("UPDATE player SET name = #{newName} WHERE position = #{pos}")
-    void updatePlayerNameByPosition(String pos, String newName);
+
+    @Update("UPDATE player SET name = #{newName} WHERE position = #{pos} AND is_active = #{isActive}")
+    void updatePlayerNameByPosition(String pos, String newName,Boolean isActive);
 }

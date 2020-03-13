@@ -11,6 +11,7 @@ public class Mistake {
     Integer p4;
     Date logTime;
     String remark;
+    Boolean isValid;
 
     @Override
     public String toString() {
@@ -23,6 +24,7 @@ public class Mistake {
                 ", p4=" + p4 +
                 ", logTime=" + logTime +
                 ", remark='" + remark + '\'' +
+                ", isValid=" + isValid +
                 '}';
     }
 
@@ -88,5 +90,13 @@ public class Mistake {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Boolean getValid() {
+        return isValid;
+    }
+
+    public void setValid(Boolean valid) {
+        isValid = valid;
     }
 }

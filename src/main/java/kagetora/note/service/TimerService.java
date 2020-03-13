@@ -42,6 +42,10 @@ public class TimerService {
         return ret;
     }
 
+    public void deleteAllTimer(){
+        timerMapper.deleteAllTimer();
+    }
+
     @Autowired
     public TimerService(TimerMapper timerMapper) {
         this.timerMapper = timerMapper;

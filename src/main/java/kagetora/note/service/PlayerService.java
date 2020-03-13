@@ -6,15 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PlayerService {
     PlayerMapper playerMapper;
-
+    private final List<String> positions = List.of("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
     public List<Player> getAllPlayer(){
         return playerMapper.selectAllPlayer();
     }
@@ -33,10 +30,13 @@ public class PlayerService {
     }
 
     public void updatePlayerNameByPosition(String pos,String newName){
-        List<String> positions = Arrays.asList("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
         if (positions.contains(pos)&& !newName.isBlank()){
-            playerMapper.updatePlayerNameByPosition(pos,newName);
+            playerMapper.updatePlayerNameByPosition(pos,newName,true);
         }
+    }
+
+    public void resetPlayerName(){
+        positions.forEach((var pos)-> playerMapper.updatePlayerNameByPosition(pos,pos,true));
     }
 
     @Autowired

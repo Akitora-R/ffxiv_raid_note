@@ -27,6 +27,11 @@ public class MistakeService {
         return this.mistakeMapper.deleteById(id);
     }
 
+    @Transactional
+    public int invalidateAllMis(){
+        return 0;
+    }
+
     @Autowired
     public MistakeService(MistakeMapper mistakeMapper) {
         this.mistakeMapper = mistakeMapper;

@@ -18,39 +18,37 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 public class IndexCtl {
-    private Logger logger=LoggerFactory.getLogger(IndexCtl.class);
-    private ObjectMapper mapper=new ObjectMapper();
+    private Logger logger = LoggerFactory.getLogger(IndexCtl.class);
+    private ObjectMapper mapper = new ObjectMapper();
     private PlayerService playerService;
     private MistakeService mistakeService;
     private TimerService timerService;
 
     @RequestMapping("/")
-    public String index(Model model){
-        model.addAttribute("nameMap",playerService.getPosNameMap());
-        model.addAttribute("totalPoint",playerService.getTotalPoint());
-        model.addAttribute("totalTimeMill",timerService.getTotalMillisecond().toString());
-        model.addAttribute("todayTimeMill",timerService.getTodayMillisecond().toString());
-        model.addAttribute("currRaid","绝亚历山大");
+    public String index(Model model) {
+        model.addAttribute("nameMap", playerService.getPosNameMap());
+        model.addAttribute("totalPoint", playerService.getTotalPoint());
+        model.addAttribute("totalTimeMill", timerService.getTotalMillisecond().toString());
+        model.addAttribute("todayTimeMill", timerService.getTodayMillisecond().toString());
+        model.addAttribute("currRaid", "绝亚历山大");
         return "index";
     }
 
     @ResponseBody
     @RequestMapping("/ajaxGetNote")
-    public Object ajaxGetNote(){
+    public Object ajaxGetNote() {
         return playerService.getAllPlayer();
     }
 
     @ResponseBody
     @RequestMapping("/ajaxSetMis")
-    public Object ajaxSetMis(String mis){
+    public Object ajaxSetMis(String mis) {
         Mistake mistake = null;
         try {
             mistake = mapper.readValue(mis, Mistake.class);
@@ -65,8 +63,8 @@ public class IndexCtl {
 
     @ResponseBody
     @RequestMapping("ajaxGetPlayerMis")
-    public Object ajaxGetPlayerMis(String playerJson){
-        Player player=null;
+    public Object ajaxGetPlayerMis(String playerJson) {
+        Player player = null;
         try {
             player = mapper.readValue(playerJson, Player.class);
         } catch (JsonProcessingException e) {
@@ -78,8 +76,8 @@ public class IndexCtl {
 
     @ResponseBody
     @RequestMapping("/ajaxSaveTimer")
-    public Object ajaxSaveTimer(String timerLogs){
-        if (StringUtils.isEmpty(timerLogs)){
+    public Object ajaxSaveTimer(String timerLogs) {
+        if (StringUtils.isEmpty(timerLogs)) {
             return false;
         }
         Timer[] timers = null;
@@ -91,14 +89,14 @@ public class IndexCtl {
         assert timers != null;
         timerService.insertAllTimers(timers);
         HashMap<String, Object> ret = new HashMap<>();
-        ret.put("today",timerService.getTodayMillisecond());
-        ret.put("total",timerService.getTotalMillisecond());
+        ret.put("today", timerService.getTodayMillisecond());
+        ret.put("total", timerService.getTotalMillisecond());
         return ret;
     }
 
     @ResponseBody
     @RequestMapping("/ajaxDeleteMis")
-    public Object ajaxDeleteMis(int id){
+    public Object ajaxDeleteMis(int id) {
         mistakeService.deleteById(id);
         return true;
     }
@@ -109,12 +107,30 @@ public class IndexCtl {
         logger.info(data);
         List<Map<String, String>> value = null;
         try {
-            value = mapper.readValue(data, new TypeReference<>() {});
+            value = mapper.readValue(data, new TypeReference<>() {
+            });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         assert value != null;
-        value.forEach((var i)-> playerService.updatePlayerNameByPosition(i.get("pos"),i.get("name")));
+        value.forEach((var i) -> playerService.updatePlayerNameByPosition(i.get("pos"), i.get("name")));
+        return true;
+    }
+
+    @ResponseBody
+    @RequestMapping("/ajaxReset")
+    public Object ajaxReset(String type) {
+        switch (type) {
+            case "playerName":
+                playerService.resetPlayerName();
+                break;
+            case "timer":
+                timerService.deleteAllTimer();
+                break;
+            case "note":
+                mistakeService.invalidateAllMis();
+                break;
+        }
         return true;
     }
 

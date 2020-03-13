@@ -130,7 +130,7 @@
     $(function () {
         $("#timeCost").text(calTimeString(totalTimeMill));
         $("#todayTime").text(calTimeString(todayTimeMill));
-        pointChart = echarts.init($("#charts")[0]);
+        pointChart = echarts.init($("#charts")[0],"light");
         initNoteData();
 
         //解决tab切换图表不显示
@@ -401,6 +401,22 @@
             }
         });
     }
+
+    function ajaxReset(type) {
+        if (confirm("确定情况吗?")){
+            $.ajax({
+                type: "GET",
+                url: "ajaxReset",
+                data: {type:type},
+                dataType: "json",
+                success: function (resp) {
+                    if(resp){
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
 </script>
 
 <body>
@@ -545,11 +561,14 @@
                                 <a class="nav-link" id="manage-player-tab" data-toggle="pill" href="#manage-player"
                                    role="tab" aria-controls="manage-player" aria-selected="false">玩家</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="manage-settings-tab" data-toggle="pill" href="#manage-settings"
+                                   role="tab" aria-controls="manage-settings" aria-selected="false">设置</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
-
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="manage-time" role="tabpanel"
                                      aria-labelledby="manage-time-tab">
@@ -694,6 +713,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="manage-settings" role="tabpanel"
+                                     aria-labelledby="manage-settings-tab">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <button class="btn btn-block btn-outline-danger" onclick="ajaxReset('timer')">重置时间数据</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-block btn-outline-danger" onclick="ajaxReset('playerName')">重置玩家名称</button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-block btn-outline-danger" onclick="ajaxReset('note')">重置小本本</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -803,18 +836,18 @@
                         </div>
                     </div>
                 </div>
-                <#--                <div class="row">-->
-                <#--                    <div class="col-12">-->
-                <#--                        <div class="card">-->
-                <#--                            <div class="card-body">-->
-                <#--                                <h5 class="card-title">[[title]]</h5>-->
-                <#--                                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>-->
-                <#--                                <p class="card-text">[[text]]</p>-->
-                <#--                                <a href="#" class="card-link">[[link]]</a>-->
-                <#--                            </div>-->
-                <#--                        </div>-->
-                <#--                    </div>-->
-                <#--                </div>-->
+<#--                <div class="row">-->
+<#--                    <div class="col-12">-->
+<#--                        <div class="card">-->
+<#--                            <div class="card-body">-->
+<#--                                <h5 class="card-title">[[title]]</h5>-->
+<#--                                <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>-->
+<#--                                <p class="card-text">[[text]]</p>-->
+<#--                                <a href="#" class="card-link">[[link]]</a>-->
+<#--                            </div>-->
+<#--                        </div>-->
+<#--                    </div>-->
+<#--                </div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
