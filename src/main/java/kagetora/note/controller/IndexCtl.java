@@ -136,6 +136,12 @@ public class IndexCtl {
         return true;
     }
 
+    @ResponseBody
+    @RequestMapping("/ajaxGetTodayMis")
+    public Object ajaxGetTodayMis(){
+        return playerService.getTodayPlayerPoint();
+    }
+
     @Autowired
     public IndexCtl(PlayerService playerService, MistakeService mistakeService, TimerService timerService) {
         this.playerService = playerService;

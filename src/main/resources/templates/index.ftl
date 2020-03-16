@@ -370,7 +370,7 @@
     }
 
     function ajaxReset(type) {
-        if (confirm("确定情况吗?")){
+        if (confirm("确定清空吗?")){
             $.ajax({
                 type: "GET",
                 url: "ajaxReset",

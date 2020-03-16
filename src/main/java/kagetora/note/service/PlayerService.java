@@ -29,6 +29,19 @@ public class PlayerService {
         return totalPoint==null?0:totalPoint;
     }
 
+    public List<Map<String,Integer>> getTodayPlayerPoint(){
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+        gc.set(Calendar.HOUR_OF_DAY,0);
+        gc.set(Calendar.MINUTE,0);
+        gc.set(Calendar.SECOND,0);
+        gc.set(Calendar.MILLISECOND,0);
+        Date begin = gc.getTime();
+        gc.add(Calendar.DAY_OF_YEAR,1);
+        Date end = gc.getTime();
+        return playerMapper.selectPlayerToMisByDate(begin,end);
+    }
+
     public void updatePlayerNameByPosition(String pos,String newName){
         if (positions.contains(pos)&& !newName.isBlank()){
             playerMapper.updatePlayerNameByPosition(pos,newName,true);

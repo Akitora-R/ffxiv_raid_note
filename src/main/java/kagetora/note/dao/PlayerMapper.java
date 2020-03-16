@@ -4,7 +4,9 @@ import kagetora.note.entity.Player;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -24,6 +26,8 @@ public interface PlayerMapper {
     @Select("SELECT SUM(p1+p2+p3+p4) FROM mistake LEFT JOIN player ON mistake.player_id=player.id WHERE active=true")
     Integer getTotalPoint();
 
+    @Select("SELECT SUM(p1+p2+p3+p4) FROM mistake LEFT JOIN player ON mistake.player_id=player.id WHERE active=true AND log_time>=#{begin} AND log_time < #{end} ")
+    List<Map<String,Integer>> selectPlayerToMisByDate(Date begin,Date end);
 
     @Update("UPDATE player SET name = #{newName} WHERE position = #{pos} AND active = #{isActive}")
     void updatePlayerNameByPosition(String pos, String newName,Boolean isActive);

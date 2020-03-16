@@ -3,15 +3,15 @@ package kagetora.note.entity;
 import java.util.Date;
 
 public class Mistake {
-    Integer id;
-    Integer playerId;
-    Integer p1;
-    Integer p2;
-    Integer p3;
-    Integer p4;
-    Date logTime;
-    String remark;
-    Boolean valid;
+    private Integer id;
+    private Integer playerId;
+    private Integer p1;
+    private Integer p2;
+    private Integer p3;
+    private Integer p4;
+    private Date logTime;
+    private String remark;
+    private Boolean valid;
 
     @Override
     public String toString() {

@@ -99,5 +99,14 @@ function setTotalChartData() {
 
 function setTodayChartData() {
     charts.set("todayPointChart",new Chart(echarts.init($("#TodayChart")[0],"light")));
+    $.ajax({
+        type: "POST",
+        url: "ajaxGetTodayMis",
+        data: {},
+        dataType: "json",
+        success: function (resp) {
+            console.log(resp);
+        }
+    });
     //TODO
 }
