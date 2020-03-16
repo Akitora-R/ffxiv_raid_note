@@ -6,7 +6,7 @@ public class Player {
     private Integer id;
     private String name;
     private String position;
-    private Boolean isActive;
+    private Boolean active;
     private List<Mistake> mistake;
 
     @Override
@@ -15,7 +15,7 @@ public class Player {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", position='" + position + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" + active +
                 ", mistake=" + mistake +
                 '}';
     }
@@ -45,11 +45,11 @@ public class Player {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public List<Mistake> getMistake() {

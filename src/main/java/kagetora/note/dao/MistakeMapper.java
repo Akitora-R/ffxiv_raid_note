@@ -15,7 +15,7 @@ public interface MistakeMapper {
     @Select("SELECT * FROM mistake WHERE player_id = #{id}")
     List<Mistake> selectMistakeByPlayer(Player player);
 
-    @Insert("INSERT INTO mistake(player_id,p1,p2,p3,p4,log_time,remark,is_valid) VALUES(#{playerId},#{p1},#{p2},#{p3},#{p4},#{logTime},#{remark},#{isValid})")
+    @Insert("INSERT INTO mistake(player_id,p1,p2,p3,p4,log_time,remark,valid) VALUES(#{playerId},#{p1},#{p2},#{p3},#{p4},#{logTime},#{remark},#{valid})")
     @Options(useGeneratedKeys = true,keyProperty="id")
     int insertMistake(Mistake mistake);
 

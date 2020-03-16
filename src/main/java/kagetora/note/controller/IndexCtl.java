@@ -30,7 +30,6 @@ public class IndexCtl {
     private MistakeService mistakeService;
     private TimerService timerService;
     //todo 前端设置进度-耗时(手动设置)联动
-    //todo Unrecognized field "isValid"
     //todo
 
     @RequestMapping("/")

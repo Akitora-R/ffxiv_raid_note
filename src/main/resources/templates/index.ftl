@@ -12,6 +12,7 @@
 <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
 <#--<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="myJS/charts.js"></script>
 <style>
     /*
     .hide {
@@ -38,7 +39,6 @@
 </style>
 <script>
     let data;//后台List<Player>
-    let pointChart;//总得点图对象
     let tempPlayer;//临时角色
     let tempMistake;//临时失误表
     let timerStartPoint;//计时开始点
@@ -47,30 +47,13 @@
     let totalTimeMill =${totalTimeMill};//总开荒时间
     let todayTimeMill =${todayTimeMill};//今天开荒时间
     let todayTimeInterval;//更新今天开荒时间的定时器
-    let pointChartOption = {//得点图配置对象
-        title: {
-            text: '好人榜'
-        },
-        tooltip: {},
-        legend: {
-            data: ['好人值']
-        },
-        xAxis: {
-            data: []
-        },
-        yAxis: {},
-        series: [{
-            name: '好人值',
-            type: 'bar',
-            data: []
-        }]
-    };
+
 
     function Player() {//参考后台的Player
         this.id = undefined;
         this.name = undefined;
         this.position = undefined;
-        this.active = false;
+        this.active = true;
         this.mistake = [];
         this.getTotalPoint = function () {
             let ret = 0;
@@ -131,16 +114,9 @@
     $(function () {
         $("#timeCost").text(calTimeString(totalTimeMill));
         $("#todayTime").text(calTimeString(todayTimeMill));
-        pointChart = echarts.init($("#charts")[0],"light");
+
         initNoteData();
 
-        //解决tab切换图表不显示
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            pointChart.resize();
-        });
-        $(window).resize(function () {
-            pointChart.resize();
-        });
         //模态框关闭时清空暂存玩家和暂存点数
         $('#pointModal').on('hidden.bs.modal', function (e) {
             tempPlayer = undefined;
@@ -158,11 +134,11 @@
             data: {},
             dataType: "json",
             success: function (resp) {
+                console.log(resp);
                 //获取数据
                 data = resp;
                 //echart设置数据
-                setPointChartData();
-                pointChart.setOption(pointChartOption);
+                initCharts();
             }
         });
     }
@@ -222,16 +198,6 @@
             ret += v.p1 + v.p2 + v.p3 + v.p4;
         });
         return ret;
-    }
-
-    //从总本(浏览器副本)设置图表json的数据
-    function setPointChartData() {
-        pointChartOption.xAxis.data = [];
-        pointChartOption.series[0].data = [];
-        $.each(data, function (i, p) {
-            pointChartOption.xAxis.data.push(p.name);
-            pointChartOption.series[0].data.push(getTotalPoint(p));
-        });
     }
 
     function saveNote() {
@@ -751,7 +717,7 @@
                     <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
                         <div class="tab-content" id="pills-tabContent">
                             <div class="row">
-                                <div class="col-12" id="charts" style="height: 20rem">
+                                <div class="col-12" id="TotalChart" style="height: 20rem">
 
                                 </div>
                             </div>
