@@ -14,25 +14,6 @@
 <#--<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
 <script src="myJS/charts.js"></script>
 <style>
-    /*
-    .hide {
-        display: none;
-    }
-
-    .test {
-        padding: 5px;
-    }
-
-    @media (min-width: 576px)
-    {
-        .card-columns {
-            -webkit-column-count: 2;
-            -moz-column-count: 2;
-            column-count: 2;
-        }
-    }
-    */
-
     .btn {
         margin: 5px;
     }
@@ -389,34 +370,6 @@
 <body>
 <div class="container-fluid">
 
-<!--    试做方案,瀑布流式卡片-->
-<!--    <div class="row">-->
-<!--        <div class="card-columns">-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Card title that wraps to a new line</h5>-->
-<!--                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="card p-3">-->
-<!--                <blockquote class="blockquote mb-0 card-body">-->
-<!--                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>-->
-<!--                    <footer class="blockquote-footer">-->
-<!--                        <small class="text-muted">-->
-<!--                            Someone famous in <cite title="Source Title">Source Title</cite>-->
-<!--                        </small>-->
-<!--                    </footer>-->
-<!--                </blockquote>-->
-<!--            </div>-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Card title</h5>-->
-<!--                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>-->
-<!--                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="row">
         <div class="col-md-12" style="margin-top: 5px;margin-bottom: 20px;">
