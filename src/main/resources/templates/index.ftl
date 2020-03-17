@@ -38,6 +38,7 @@
     }
 </style>
 <script>
+    const positions = ["D1","D2","D3","D4","H1","H2","T1","T2"];
     let data;//后台List<Player>
     let tempPlayer;//临时角色
     let tempMistake;//临时失误表
@@ -314,7 +315,7 @@
                 <h5 class="card-title">[[title]]</h5>
                 <h6 class="card-subtitle mb-2 text-muted">[[subtitle]]</h6>
                 <p class="card-text">[[text]]</p>
-                <a href="javascript:void(0)" onclick="ajaxDeleteMis([[id]])" class="card-link">删除这条记录</a>
+                <a href="javascript:void(0)" onclick="ajaxDeleteMis('[[id]]')" class="card-link">删除这条记录</a>
             </div>
         </div>
     </div>
