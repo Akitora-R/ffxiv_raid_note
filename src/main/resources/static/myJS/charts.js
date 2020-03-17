@@ -1,7 +1,7 @@
-function Chart(obj,setting){
-    this.chartObj=obj;
+class Chart{
+    chartObj;
     //图表配置对象
-    this.chartSetting={
+    chartSetting={
         title: {
             text: 'title'
         },
@@ -19,6 +19,12 @@ function Chart(obj,setting){
             data: []
         }]
     };
+    constructor(obj,setting) {
+        this.chartObj=obj;
+        if (setting!==undefined&&setting!==null){
+            this.chartSetting=setting;
+        }
+    }
 }
 
 let pointChartOption = {//得点图配置对象
@@ -66,7 +72,7 @@ let charts=new Map();
 
 $(function () {
     //解决tab切换图表不显示
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
         charts.forEach(function (v,k) {
             v.chartObj.resize();
         });
@@ -78,27 +84,27 @@ $(function () {
     });
 });
 
+
 function initCharts() {
     setTotalChartData();
     setTodayChartData();
 }
 
 function setTotalChartData() {
-    charts.set("totalPointChart",new Chart(echarts.init($("#TotalChart")[0],"light")));
-    let totalPointChart=charts.get("totalPointChart");
-    totalPointChart.chartSetting.title.text="总好人榜";
-    totalPointChart.chartSetting.series[0].name="好人值";
-    totalPointChart.chartSetting.xAxis.data =[];
-    totalPointChart.chartSetting.series[0].data=[];
+    let chart=new Chart(echarts.init($("#TotalChart")[0],"light"));
+    charts.set("totalPointChart",chart);
+    chart.chartSetting.title.text="总好人榜";
+    chart.chartSetting.series[0].name="好人值";
+    chart.chartSetting.xAxis.data =[];
+    chart.chartSetting.series[0].data=[];
     $.each(data, function (i, p) {
-        totalPointChart.chartSetting.xAxis.data.push(p.name);
-        totalPointChart.chartSetting.series[0].data.push(getTotalPoint(p));
+        chart.chartSetting.xAxis.data.push(p.name);
+        chart.chartSetting.series[0].data.push(getTotalPoint(p));
     });
-    totalPointChart.chartObj.setOption(totalPointChart.chartSetting);
+    chart.chartObj.setOption(chart.chartSetting);
 }
 
 function setTodayChartData() {
-    charts.set("todayPointChart",new Chart(echarts.init($("#TodayChart")[0],"light")));
     $.ajax({
         type: "POST",
         url: "ajaxGetTodayMis",
@@ -106,7 +112,17 @@ function setTodayChartData() {
         dataType: "json",
         success: function (resp) {
             console.log(resp);
+            let chart=new Chart(echarts.init($("#TodayChart")[0],"light"));
+            charts.set("todayPointChart",chart);
+            chart.chartSetting.title.text="今日好人榜";
+            chart.chartSetting.series[0].name="好人值";
+            chart.chartSetting.xAxis.data =[];
+            chart.chartSetting.series[0].data=[];
+            $.each(resp,function (i,m) {
+                chart.chartSetting.xAxis.data.push(m.name);
+                chart.chartSetting.series[0].data.push(m.point);
+            });
+            chart.chartObj.setOption(chart.chartSetting);
         }
     });
-    //TODO
 }

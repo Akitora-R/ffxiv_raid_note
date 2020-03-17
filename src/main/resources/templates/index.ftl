@@ -48,7 +48,6 @@
     let todayTimeMill =${todayTimeMill};//今天开荒时间
     let todayTimeInterval;//更新今天开荒时间的定时器
 
-
     function Player() {//参考后台的Player
         this.id = undefined;
         this.name = undefined;
@@ -517,8 +516,7 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time"
-                                   role="tab" aria-controls="manage-time" aria-selected="true">时间</a>
+                                <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time" role="tab" aria-controls="manage-time" aria-selected="true">时间</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="manage-progress-tab" data-toggle="pill" href="#manage-progress"
@@ -537,8 +535,7 @@
                     <div class="card-body tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
                             <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="manage-time" role="tabpanel"
-                                     aria-labelledby="manage-time-tab">
+                                <div class="tab-pane fade show active" id="manage-time" role="tabpanel" aria-labelledby="manage-time-tab">
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <small>今日已累计开荒:</small>
@@ -706,20 +703,27 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <ul class="nav nav-tabs card-header-tabs" id="pointTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="manage-time-tab" data-toggle="pill" href="#manage-time"
-                               role="tab" aria-controls="manage-time" aria-selected="true">玩家得点</a>
+                            <a class="nav-link active" id="total-tab" data-toggle="pill" href="#total" role="tab" aria-controls="total" aria-selected="true">玩家得点</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="today-tab" data-toggle="pill" href="#today" role="tab" aria-controls="today" aria-selected="false">今日玩家得点</a>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="manage" role="tabpanel" aria-labelledby="manage-tab">
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="row">
-                                <div class="col-12" id="TotalChart" style="height: 20rem">
+                <div class="card-body tab-content" id="pointTabContent">
+                    <div class="tab-pane fade show active" id="total" role="tabpanel" aria-labelledby="total-tab">
+                        <div class="row">
+                            <div class="col-12" id="TotalChart" style="height: 20rem">
 
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="today" role="tabpanel" aria-labelledby="total-tab">
+                        <div class="row">
+                            <div class="col-12" id="TodayChart" style="height: 20rem">
+
                             </div>
                         </div>
                     </div>
@@ -798,8 +802,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">备注</span>
                             </div>
-                            <textarea class="form-control" aria-label="remark" id="remark"
-                                      placeholder="看看你都干了些啥好事"></textarea>
+                            <textarea class="form-control" aria-label="remark" id="remark" placeholder="看看你都干了些啥好事"></textarea>
                         </div>
                     </div>
                 </div>
