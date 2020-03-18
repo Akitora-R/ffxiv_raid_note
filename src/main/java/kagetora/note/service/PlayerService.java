@@ -2,6 +2,7 @@ package kagetora.note.service;
 
 import kagetora.note.dao.PlayerMapper;
 import kagetora.note.entity.Player;
+import org.apache.ibatis.annotations.Many;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -50,6 +51,11 @@ public class PlayerService {
 
     public void resetPlayerName(){
         positions.forEach((var pos)-> playerMapper.updatePlayerNameByPosition(pos,pos,true));
+    }
+
+    public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
+
+        return null;
     }
 
     @Autowired
