@@ -54,7 +54,12 @@ public class PlayerService {
     }
 
     public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
-
+        List<Map<String, Object>> data = playerMapper.selectChartDataForDayStack();
+        HashSet<Date> dates = new HashSet<>();
+        for (Map<String, Object> m : data) {
+            dates.add((Date) m.get("date"));
+        }
+        System.out.println(dates);
         return null;
     }
 
