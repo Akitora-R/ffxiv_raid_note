@@ -54,7 +54,7 @@ public class PlayerService {
     }
 
     public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
-
+        List<Map<String, Object>> maps = playerMapper.selectChartDataForDayStack();
         return null;
     }
 
