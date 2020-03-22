@@ -20,6 +20,8 @@
 </style>
 <script>
     const positions = ["D1","D2","D3","D4","H1","H2","T1","T2"];
+    // noinspection JSAnnotator
+    const nameMap = ${nameMapJson};
     let data;//后台List<Player>
     let tempPlayer;//临时角色
     let tempMistake;//临时失误表

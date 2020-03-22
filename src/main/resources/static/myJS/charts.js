@@ -88,6 +88,7 @@ $(function () {
 function initCharts() {
     setTotalChartData();
     setTodayChartData();
+    setDayStackChartData();
 }
 
 function setTotalChartData() {
@@ -123,6 +124,18 @@ function setTodayChartData() {
                 chart.chartSetting.series[0].data.push(m.point);
             });
             chart.chartObj.setOption(chart.chartSetting);
+        }
+    });
+}
+
+function setDayStackChartData() {
+    $.ajax({
+        type: "POST",
+        url: "ajaxGetDayStackChartData",
+        data: {},
+        dataType: "json",
+        success: function (resp) {
+            console.log(resp);
         }
     });
 }

@@ -36,6 +36,6 @@ public interface PlayerMapper {
             @Result(property = "date", column = "date", javaType = Date.class),
             @Result(property = "point", column = "point", javaType = Integer.class)
     })
-    @Select("SELECT DATE_FORMAT( log_time, '%Y-%m-%d' ) date,sum( p1 + p2 + p3 + p4 ) point,p.name name FROM mistake m LEFT JOIN player p ON p.id = m.player_id WHERE p.active = TRUE GROUP BY date,name")
+    @Select("SELECT DATE_FORMAT( log_time, '%Y-%m-%d' ) date,sum( p1 + p2 + p3 + p4 ) point,p.name name,p.position pos FROM mistake m LEFT JOIN player p ON p.id = m.player_id WHERE p.active = TRUE GROUP BY date,name,pos")
     List<Map<String, Object>> selectChartDataForDayStack();
 }

@@ -32,8 +32,10 @@ public class IndexCtl {
     //todo 前端设置进度-耗时(手动设置)联动
 
     @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("nameMap", playerService.getPosNameMap());
+    public String index(Model model) throws JsonProcessingException {
+        Map<String, String> posNameMap = playerService.getPosNameMap();
+        model.addAttribute("nameMap", posNameMap);
+        model.addAttribute("nameMapJson", mapper.writeValueAsString(posNameMap));
         model.addAttribute("totalPoint", playerService.getTotalPoint());
         model.addAttribute("totalTimeMill", timerService.getTotalMillisecond().toString());
         model.addAttribute("todayTimeMill", timerService.getTodayMillisecond().toString());
@@ -139,6 +141,12 @@ public class IndexCtl {
     @RequestMapping("/ajaxGetTodayMis")
     public Object ajaxGetTodayMis(){
         return playerService.getTodayPlayerPoint();
+    }
+
+    @ResponseBody
+    @RequestMapping("/ajaxGetDayStackChartData")
+    public Object ajaxGetDayStackChartData(){
+        return playerService.getChartDataForDayStack();
     }
 
     @Autowired

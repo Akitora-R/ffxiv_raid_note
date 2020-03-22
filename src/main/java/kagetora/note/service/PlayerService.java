@@ -2,17 +2,15 @@ package kagetora.note.service;
 
 import kagetora.note.dao.PlayerMapper;
 import kagetora.note.entity.Player;
-import org.apache.ibatis.annotations.Many;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
 @Service
 public class PlayerService {
     PlayerMapper playerMapper;
-    private final List<String> positions = List.of("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
+    private final Set<String> positions = Set.of("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
     public List<Player> getAllPlayer(){
         return playerMapper.selectAllPlayer();
     }
@@ -54,8 +52,20 @@ public class PlayerService {
     }
 
     public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
+        Set<String> positions = Set.of("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
         List<Map<String, Object>> maps = playerMapper.selectChartDataForDayStack();
-        return null;
+        Map<Date, Map<String, Integer>> data = new HashMap<>();
+        maps.forEach(map -> {
+            Date currDate = (Date) map.get("date");
+            Map<String, Integer> datum= data.get(currDate);
+            if (datum==null){
+                datum = new HashMap<>();
+            }
+            data.put(currDate,datum);
+            datum.put((String) map.get("pos"), (Integer) map.get("point"));
+        });
+        data.forEach((k,v)-> positions.forEach(p-> v.putIfAbsent(p, 0)));
+        return data;
     }
 
     @Autowired
