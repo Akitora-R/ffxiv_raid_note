@@ -26,7 +26,7 @@ public interface PlayerMapper {
     @Select("SELECT SUM(p1+p2+p3+p4) FROM mistake LEFT JOIN player ON mistake.player_id=player.id WHERE active=true")
     Integer getTotalPoint();
 
-    @Select("SELECT p.position pos, p.name name, SUM(p1+p2+p3+p4) point FROM mistake m LEFT JOIN player p ON m.player_id=p.id WHERE active=true AND m.log_time>=#{begin} AND m.log_time < #{end} GROUP BY p.name ORDER BY pos")
+    @Select("SELECT p.position pos, p.name name, SUM(p1+p2+p3+p4) point FROM mistake m LEFT JOIN player p ON m.player_id=p.id WHERE active=true AND m.log_time>=#{begin} AND m.log_time < #{end} GROUP BY p.name,pos ORDER BY pos")
     List<Map<String, Integer>> selectPlayerToMisByDate(Date begin, Date end);
 
     @Update("UPDATE player SET name = #{newName} WHERE position = #{pos} AND active = #{active}")

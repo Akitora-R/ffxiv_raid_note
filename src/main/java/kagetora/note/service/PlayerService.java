@@ -52,7 +52,6 @@ public class PlayerService {
     }
 
     public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
-        Set<String> positions = Set.of("T1", "T2", "H1", "H2", "D1", "D2", "D3", "D4");
         List<Map<String, Object>> maps = playerMapper.selectChartDataForDayStack();
         Map<Date, Map<String, Integer>> data = new HashMap<>();
         maps.forEach(map -> {

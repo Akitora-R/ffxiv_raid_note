@@ -130,12 +130,25 @@ function setTodayChartData() {
 
 function setDayStackChartData() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "ajaxGetDayStackChartData",
         data: {},
         dataType: "json",
         success: function (resp) {
             console.log(resp);
+            let chart=new Chart(echarts.init($("#DayStackChart")[0]));
+            charts.set("DayStackChart",chart);
+            chart.chartSetting.title.text="日堆叠图";
+            chart.chartSetting.tooltip={
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            };
+            chart.chartSetting.legend.data=[];
         }
     });
 }
