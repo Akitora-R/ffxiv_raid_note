@@ -666,6 +666,9 @@
                         <li class="nav-item">
                             <a class="nav-link" id="today-tab" data-toggle="pill" href="#today" role="tab" aria-controls="today" aria-selected="false">今日玩家得点</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="dayStack-tab" data-toggle="pill" href="#dayStack" role="tab" aria-controls="dayStack" aria-selected="false">得点堆积图</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body tab-content" id="pointTabContent">
@@ -679,6 +682,13 @@
                     <div class="tab-pane fade" id="today" role="tabpanel" aria-labelledby="total-tab">
                         <div class="row">
                             <div class="col-12" id="TodayChart" style="height: 20rem">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="dayStack" role="tabpanel" aria-labelledby="total-tab">
+                        <div class="row">
+                            <div class="col-12" id="DayStackChart" style="height: 20rem">
 
                             </div>
                         </div>

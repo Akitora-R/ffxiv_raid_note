@@ -9,6 +9,7 @@ class Chart{
         legend: {
             data: ['point']
         },
+        toolbox:{},
         xAxis: {
             data: []
         },
@@ -74,6 +75,7 @@ $(function () {
     //解决tab切换图表不显示
     $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
         charts.forEach(function (v,k) {
+            console.log(k);
             v.chartObj.resize();
         });
     });
@@ -112,7 +114,6 @@ function setTodayChartData() {
         data: {},
         dataType: "json",
         success: function (resp) {
-            console.log(resp);
             let chart=new Chart(echarts.init($("#TodayChart")[0],"light"));
             charts.set("todayPointChart",chart);
             chart.chartSetting.title.text="今日好人榜";
@@ -129,6 +130,15 @@ function setTodayChartData() {
 }
 
 function setDayStackChartData() {
+    //so just tell me now, just tell me now
+    //why cry now
+    let tempSerial = function (pos) {
+        this.name = pos;
+        this.type = 'line';
+        this.stack = '总量';
+        this.areaStyle = {};
+        this.data = [];
+    };
     $.ajax({
         type: "GET",
         url: "ajaxGetDayStackChartData",
@@ -148,7 +158,40 @@ function setDayStackChartData() {
                     }
                 }
             };
-            chart.chartSetting.legend.data=[];
+            chart.chartSetting.legend.data=positions;
+            chart.chartSetting.toolbox={
+                feature: {
+                    saveAsImage: {}
+                }
+            };
+            let temp=[];
+            $.each(resp,function (k,v) {
+                let date=new Date(k);
+                console.log(date);
+                temp.push(date.getMonth()+'-'+date.getDay());
+            });
+            chart.chartSetting.xAxis=[
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: temp
+                }
+            ];
+            chart.chartSetting.yAxis=[
+                {
+                    type: 'value'
+                }
+            ];
+            chart.chartSetting.series=[];
+            $.each(positions,function (index,pos) {
+                temp = new tempSerial(pos);
+                $.each(resp,function (key,val) {
+                    temp.data.push(val[pos]);
+                });
+                chart.chartSetting.series.push(temp);
+            });
+            console.log(chart.chartSetting);
+            chart.chartObj.setOption(chart.chartSetting);
         }
     });
 }
