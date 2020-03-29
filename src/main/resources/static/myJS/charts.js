@@ -69,13 +69,13 @@ let charts=new Map();
 /*
 * totalPointChart
 * todayPointChart
+* DayStackChart
 * */
 
 $(function () {
     //解决tab切换图表不显示
     $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
         charts.forEach(function (v,k) {
-            console.log(k);
             v.chartObj.resize();
         });
     });
@@ -165,8 +165,8 @@ function setDayStackChartData() {
                 }
             };
             let temp=[];
-            $.each(resp,function (k,v) {
-                let date=new Date(k);
+            $.each(resp,function (i,v) {
+                let date=new Date(v.date);
                 console.log(date);
                 temp.push(date.getMonth()+'-'+date.getDay());
             });
@@ -185,8 +185,8 @@ function setDayStackChartData() {
             chart.chartSetting.series=[];
             $.each(positions,function (index,pos) {
                 temp = new tempSerial(pos);
-                $.each(resp,function (key,val) {
-                    temp.data.push(val[pos]);
+                $.each(resp,function (i,val) {
+                    temp.data.push(val.data[pos]);
                 });
                 chart.chartSetting.series.push(temp);
             });

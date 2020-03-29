@@ -29,6 +29,7 @@ public class MistakeService {
 
     @Transactional
     public int invalidateAllMis(){
+        //todo
         return 0;
     }
 

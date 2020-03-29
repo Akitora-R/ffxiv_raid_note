@@ -2,6 +2,7 @@ package kagetora.note.service;
 
 import kagetora.note.dao.PlayerMapper;
 import kagetora.note.entity.Player;
+import kagetora.note.entity.VO.MistakeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,20 +52,29 @@ public class PlayerService {
         positions.forEach((var pos)-> playerMapper.updatePlayerNameByPosition(pos,pos,true));
     }
 
-    public Map<Date,Map<String,Integer>> getChartDataForDayStack(){
+    public ArrayList<MistakeVO> getChartDataForDayStack(){
         List<Map<String, Object>> maps = playerMapper.selectChartDataForDayStack();
-        Map<Date, Map<String, Integer>> data = new HashMap<>();
+        ArrayList<MistakeVO> mistakeVOS = new ArrayList<>();
         maps.forEach(map -> {
             Date currDate = (Date) map.get("date");
-            Map<String, Integer> datum= data.get(currDate);
+            MistakeVO datum = getMistakeVOByDate(mistakeVOS, currDate);
             if (datum==null){
-                datum = new HashMap<>();
+                datum = new MistakeVO(currDate,new HashMap<>());
+                mistakeVOS.add(datum);
             }
-            data.put(currDate,datum);
-            datum.put((String) map.get("pos"), (Integer) map.get("point"));
+            datum.getData().put((String) map.get("pos"), (Integer) map.get("point"));
         });
-        data.forEach((k,v)-> positions.forEach(p-> v.putIfAbsent(p, 0)));
-        return data;
+        mistakeVOS.forEach(mistakeVO -> positions.forEach(p-> mistakeVO.getData().putIfAbsent(p,0)));
+        return mistakeVOS;
+    }
+
+    private MistakeVO getMistakeVOByDate(List<MistakeVO> list,Date date){
+        for (MistakeVO vo : list) {
+            if (vo.getDate().equals(date)){
+                return vo;
+            }
+        }
+        return null;
     }
 
     @Autowired

@@ -7,6 +7,11 @@ public class MistakeVO {
     private Date date;
     private Map<String,Integer> data;
 
+    public MistakeVO(Date date, Map<String, Integer> data) {
+        this.date = date;
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "MistakeVO{" +

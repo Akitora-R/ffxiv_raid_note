@@ -13,6 +13,7 @@
 <script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js"></script>
 <#--<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
 <script src="myJS/charts.js"></script>
+<script src="myJS/timer.js"></script>
 <style>
     .btn {
         margin: 5px;
@@ -203,91 +204,7 @@
         });
     }
 
-    function timerStart() {
-        let startBtn = $("#timerStart");
-        let pauseBtn = $("#timerPause");
-        timerStartPoint = new Date();
-        startBtn.addClass("disabled");
-        startBtn.attr("disabled", "disabled");
-        startBtn.html(
-            '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>' +
-            '计时中...');
-        pauseBtn.removeAttr("disabled");
-        pauseBtn.removeClass("disabled");
-        pauseBtn.html("暂停");
-        todayTimeInterval = setInterval(updateTodayTime, 1000);
-    }
 
-    function timerPause() {
-        let startBtn = $("#timerStart");
-        let pauseBtn = $("#timerPause");
-        startBtn.removeAttr("disabled");
-        startBtn.removeClass("disabled");
-        startBtn.html("开始");
-        pauseBtn.addClass("disabled");
-        pauseBtn.attr("disabled", "disabled");
-        pauseBtn.html("未开始");
-        timerEndPoint = new Date();
-        timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
-        timerStartPoint = undefined;
-        timerEndPoint = undefined;
-        clearInterval(todayTimeInterval);
-    }
-
-    function timerReset() {
-        let startBtn = $("#timerStart");
-        let pauseBtn = $("#timerPause");
-        startBtn.removeAttr("disabled");
-        startBtn.removeClass("disabled");
-        startBtn.html("开始");
-        pauseBtn.addClass("disabled");
-        pauseBtn.attr("disabled", "disabled");
-        pauseBtn.html("未开始");
-        timerLogs = [];
-        timerStartPoint = undefined;
-        timerEndPoint = undefined;
-        clearInterval(todayTimeInterval);
-    }
-
-    function timerSave() {
-        if (timerLogs.length === 0) {
-            return
-        }
-        $.ajax({
-            type: "POST",
-            url: "ajaxSaveTimer",
-            data: {timerLogs: JSON.stringify(timerLogs)},
-            dataType: "json",
-            success: function (resp) {
-                clearInterval(todayTimeInterval);
-                totalTimeMill = resp.total;
-                todayTimeMill = resp.today;
-                timerLogs = [];
-            }
-        });
-    }
-
-    function calTimeString(timeMill) {
-        let baseSecond = 1000;
-        let baseMinute = 1000 * 60;
-        let baseHour = 1000 * 60 * 60;
-        let h = parseInt(String(timeMill / baseHour));
-        let m = parseInt(String(timeMill % baseHour / baseMinute));
-        let s = String(timeMill % baseMinute / baseSecond);
-        return h + " Hour " + m + " Min " + s + " Sec";
-    }
-
-    function refreshTodayTime(timeMill) {
-        $("#todayTime").text(calTimeString(timeMill));
-    }
-
-    function updateTodayTime() {
-        let tempMill = new Date() - timerStartPoint + todayTimeMill;
-        $.each(timerLogs, function (i, v) {
-            tempMill += v.end - v.begin;
-        });
-        refreshTodayTime(tempMill);
-    }
 
     function listPlayMis() {
         let card = `
@@ -498,31 +415,32 @@
                                             <h3 id="todayTime">123H</h3>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <button id="timerStart" onclick="timerStart()"
-                                                    class="btn btn-block btn-outline-success">开始
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button id="timerPause" onclick="timerPause()"
-                                                    class="btn btn-block btn-outline-warning disabled" disabled>未开始
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button id="timerReset" onclick="timerReset()"
-                                                    class="btn btn-block btn-outline-danger">重置
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button id="timerSave" onclick="timerSave()"
-                                                    class="btn btn-block btn-outline-dark">保存
-                                            </button>
-                                        </div>
-                                    </div>
+<#--                                    自动记点式,不太好用-->
+<#--                                    <div class="row">-->
+<#--                                        <div class="col-sm-3">-->
+<#--                                            <button id="timerStart" onclick="timerStart()"-->
+<#--                                                    class="btn btn-block btn-outline-success">开始-->
+<#--                                            </button>-->
+<#--                                        </div>-->
+<#--                                        <div class="col-sm-3">-->
+<#--                                            <button id="timerPause" onclick="timerPause()"-->
+<#--                                                    class="btn btn-block btn-outline-warning disabled" disabled>未开始-->
+<#--                                            </button>-->
+<#--                                        </div>-->
+<#--                                        <div class="col-sm-3">-->
+<#--                                            <button id="timerReset" onclick="timerReset()"-->
+<#--                                                    class="btn btn-block btn-outline-danger">重置-->
+<#--                                            </button>-->
+<#--                                        </div>-->
+<#--                                        <div class="col-sm-3">-->
+<#--                                            <button id="timerSave" onclick="timerSave()"-->
+<#--                                                    class="btn btn-block btn-outline-dark">保存-->
+<#--                                            </button>-->
+<#--                                        </div>-->
+<#--                                    </div>-->
+
                                 </div>
-                                <div class="tab-pane fade" id="manage-progress" role="tabpanel"
-                                     aria-labelledby="manage-progress-tab">
+                                <div class="tab-pane fade" id="manage-progress" role="tabpanel" aria-labelledby="manage-progress-tab">
 
                                 </div>
                                 <div class="tab-pane fade" id="manage-player" role="tabpanel"
