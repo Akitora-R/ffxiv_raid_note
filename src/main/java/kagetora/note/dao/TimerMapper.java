@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -21,6 +22,9 @@ public interface TimerMapper {
 
     @Select("SELECT * FROM timer WHERE begin>= CURDATE()")
     List<Timer> selectTodayTimer();
+
+    @Delete("DELETE FROM timer WHERE begin>=#{begin} AND end<#{end}")
+    void deleteTimerByTime(Date begin,Date end);
 
     @Delete("DELETE FROM timer")
     void deleteAllTimer();

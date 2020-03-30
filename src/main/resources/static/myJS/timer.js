@@ -1,27 +1,16 @@
+let todayTimeInterval;//更新今天开荒时间的定时器
+let timerStartPoint;//计时开始点
+let timerEndPoint;//计时结束点
+let timerLogs = [];//[{being,end}]
+
 function timerStart() {
-    let startBtn = $("#timerStart");
-    let pauseBtn = $("#timerPause");
+    switchBtn(true);
     timerStartPoint = new Date();
-    startBtn.addClass("disabled");
-    startBtn.attr("disabled", "disabled");
-    startBtn.html(
-        '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>' +
-        '计时中...');
-    pauseBtn.removeAttr("disabled");
-    pauseBtn.removeClass("disabled");
-    pauseBtn.html("暂停");
     todayTimeInterval = setInterval(updateTodayTime, 1000);
 }
 
 function timerPause() {
-    let startBtn = $("#timerStart");
-    let pauseBtn = $("#timerPause");
-    startBtn.removeAttr("disabled");
-    startBtn.removeClass("disabled");
-    startBtn.html("开始");
-    pauseBtn.addClass("disabled");
-    pauseBtn.attr("disabled", "disabled");
-    pauseBtn.html("未开始");
+    switchBtn(false);
     timerEndPoint = new Date();
     timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
     timerStartPoint = undefined;
@@ -30,34 +19,30 @@ function timerPause() {
 }
 
 function timerReset() {
-    let startBtn = $("#timerStart");
-    let pauseBtn = $("#timerPause");
-    startBtn.removeAttr("disabled");
-    startBtn.removeClass("disabled");
-    startBtn.html("开始");
-    pauseBtn.addClass("disabled");
-    pauseBtn.attr("disabled", "disabled");
-    pauseBtn.html("未开始");
+    switchBtn(false);
     timerLogs = [];
     timerStartPoint = undefined;
     timerEndPoint = undefined;
     clearInterval(todayTimeInterval);
+    $("#todayTime").text(calTimeString(todayTimeMill));
 }
 
 function timerSave() {
-    if (timerLogs.length === 0) {
-        return
-    }
+    timerEndPoint = new Date();
+    timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
+    timerStartPoint = undefined;
+    timerEndPoint = undefined;
+    clearInterval(todayTimeInterval);
     $.ajax({
         type: "POST",
         url: "ajaxSaveTimer",
         data: {timerLogs: JSON.stringify(timerLogs)},
         dataType: "json",
         success: function (resp) {
-            clearInterval(todayTimeInterval);
             totalTimeMill = resp.total;
             todayTimeMill = resp.today;
             timerLogs = [];
+            timerReset();
         }
     });
 }
@@ -68,7 +53,7 @@ function calTimeString(timeMill) {
     let baseHour = 1000 * 60 * 60;
     let h = parseInt(String(timeMill / baseHour));
     let m = parseInt(String(timeMill % baseHour / baseMinute));
-    let s = String(timeMill % baseMinute / baseSecond);
+    let s = (timeMill % baseMinute / baseSecond).toFixed(2);
     return h + " Hour " + m + " Min " + s + " Sec";
 }
 
@@ -82,4 +67,41 @@ function updateTodayTime() {
         tempMill += v.end - v.begin;
     });
     refreshTodayTime(tempMill);
+}
+
+function switchBtn(state) {
+    let startBtn = $("#timerStart");
+    let pauseBtn = $("#timerPause");
+    if (state){
+        startBtn.addClass("disabled");
+        startBtn.attr("disabled", "disabled");
+        startBtn.html(
+            '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>' +
+            '计时中...');
+        pauseBtn.removeAttr("disabled");
+        pauseBtn.removeClass("disabled");
+        pauseBtn.html("暂停");
+    }else {
+        startBtn.removeAttr("disabled");
+        startBtn.removeClass("disabled");
+        startBtn.html("开始");
+        pauseBtn.addClass("disabled");
+        pauseBtn.attr("disabled", "disabled");
+        pauseBtn.html("未开始");
+    }
+}
+
+function manualSetTime() {
+    $.ajax({
+        type: "POST",
+        url: "ajaxManualSaveTimer",
+        data: {hour: $("#hourIn").val(),min:$("#minIn").val()},
+        dataType: "json",
+        success: function (resp) {
+            totalTimeMill = resp.total;
+            todayTimeMill = resp.today;
+            timerLogs = [];
+            timerReset();
+        }
+    });
 }

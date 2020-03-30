@@ -18,9 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class IndexCtl {
@@ -29,7 +27,6 @@ public class IndexCtl {
     private PlayerService playerService;
     private MistakeService mistakeService;
     private TimerService timerService;
-    //todo 前端设置进度-耗时(手动设置)联动
 
     @RequestMapping("/")
     public String index(Model model) throws JsonProcessingException {
@@ -147,6 +144,18 @@ public class IndexCtl {
     @RequestMapping("/ajaxGetDayStackChartData")
     public Object ajaxGetDayStackChartData(){
         return playerService.getChartDataForDayStack();
+    }
+
+    @ResponseBody
+    @RequestMapping("/ajaxManualSaveTimer")
+    public Object ajaxManualSaveTimer(Integer hour,Integer min){
+        HashMap<String, Object> ret = new HashMap<>();
+        timerService.deleteTodayTimer();
+        Date begin = new Date(System.currentTimeMillis() - (hour == null ? 0 : hour) * 3600 * 1000 - (min == null ? 0 : min) * 60 * 1000);
+        timerService.insertTimer(new Timer(null,begin,new Date()));
+        ret.put("today",timerService.getTodayMillisecond());
+        ret.put("total",timerService.getTotalMillisecond());
+        return ret;
     }
 
     @Autowired

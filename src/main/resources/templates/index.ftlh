@@ -26,12 +26,8 @@
     let data;//后台List<Player>
     let tempPlayer;//临时角色
     let tempMistake;//临时失误表
-    let timerStartPoint;//计时开始点
-    let timerEndPoint;//计时结束点
-    let timerLogs = [];//[{being,end}]
     let totalTimeMill =${totalTimeMill};//总开荒时间
     let todayTimeMill =${todayTimeMill};//今天开荒时间
-    let todayTimeInterval;//更新今天开荒时间的定时器
 
     function Player() {//参考后台的Player
         this.id = undefined;
@@ -416,55 +412,66 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div>
-                                            <div class="col-sm-4">
-
+                                        <div class="col-12">
+                                            <div class="card-deck">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">手动输入式</h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">会自动覆盖已保存的今天的记录(今天忘记计时的话用)</h6>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <label for="hourIn">Hour:</label>
+                                                                <input type="number" min="0" max="24" class="form-control" id="hourIn" placeholder="Hour">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="minIn">Minute:</label>
+                                                                <input type="number" min="0" max="60" class="form-control" id="minIn" placeholder="Minute">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <button class="btn btn-primary btn-block" onclick="manualSetTime()">保存</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">自动计时式</h5>
+                                                        <h6 class="card-subtitle mb-2 text-muted">就是...自动的...计时</h6>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <button id="timerStart" onclick="timerStart()" class="btn btn-block btn-outline-success">开始</button>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <button id="timerPause" onclick="timerPause()" class="btn btn-block btn-outline-warning disabled" disabled>未开始</button>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <button id="timerReset" onclick="timerReset()" class="btn btn-block btn-outline-danger">重置</button>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <button id="timerSave" onclick="timerSave()" class="btn btn-block btn-outline-dark">保存</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-4"></div>
                                         </div>
-                                        <div class="col-sm-4"></div>
                                     </div>
-<#--                                    自动记点式,不太好用-->
-<#--                                    <div class="row">-->
-<#--                                        <div class="col-sm-3">-->
-<#--                                            <button id="timerStart" onclick="timerStart()"-->
-<#--                                                    class="btn btn-block btn-outline-success">开始-->
-<#--                                            </button>-->
-<#--                                        </div>-->
-<#--                                        <div class="col-sm-3">-->
-<#--                                            <button id="timerPause" onclick="timerPause()"-->
-<#--                                                    class="btn btn-block btn-outline-warning disabled" disabled>未开始-->
-<#--                                            </button>-->
-<#--                                        </div>-->
-<#--                                        <div class="col-sm-3">-->
-<#--                                            <button id="timerReset" onclick="timerReset()"-->
-<#--                                                    class="btn btn-block btn-outline-danger">重置-->
-<#--                                            </button>-->
-<#--                                        </div>-->
-<#--                                        <div class="col-sm-3">-->
-<#--                                            <button id="timerSave" onclick="timerSave()"-->
-<#--                                                    class="btn btn-block btn-outline-dark">保存-->
-<#--                                            </button>-->
-<#--                                        </div>-->
-<#--                                    </div>-->
-
                                 </div>
                                 <div class="tab-pane fade" id="manage-progress" role="tabpanel" aria-labelledby="manage-progress-tab">
 
                                 </div>
-                                <div class="tab-pane fade" id="manage-player" role="tabpanel"
-                                     aria-labelledby="manage-player-tab">
+                                <div class="tab-pane fade" id="manage-player" role="tabpanel" aria-labelledby="manage-player-tab">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="input-group mb-3 border border-primary rounded">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">T1</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['T1']}" id="PlayerName_T1"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['T1']}" id="PlayerName_T1" aria-label="name">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -472,23 +479,19 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">T2</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['T2']}" id="PlayerName_T2"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['T2']}" id="PlayerName_T2" aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="input-group mb-3 border border-success rounded">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">H1</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['H1']}" id="PlayerName_H1"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['H1']}" id="PlayerName_H1" aria-label="name">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -496,25 +499,21 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">H2</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['H2']}" id="PlayerName_H2"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['H2']}" id="PlayerName_H2" aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="input-group mb-3 border border-danger rounded">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">D1</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['D1']}" id="PlayerName_D1"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['D1']}" id="PlayerName_D1" aria-label="name">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -522,23 +521,19 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">D2</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['D2']}" id="PlayerName_D2"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['D2']}" id="PlayerName_D2" aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="input-group mb-3 border border-danger rounded">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">D3</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['D3']}" id="PlayerName_D3"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['D3']}" id="PlayerName_D3" aria-label="name">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -546,9 +541,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">D4</span>
                                                         </div>
-                                                        <input type="text" class="form-control"
-                                                               placeholder="${nameMap['D4']}" id="PlayerName_D4"
-                                                               aria-label="name">
+                                                        <input type="text" class="form-control" placeholder="${nameMap['D4']}" id="PlayerName_D4" aria-label="name">
                                                     </div>
                                                 </div>
                                             </div>

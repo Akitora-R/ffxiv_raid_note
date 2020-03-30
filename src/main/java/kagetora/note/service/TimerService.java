@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -44,6 +47,19 @@ public class TimerService {
 
     public void deleteAllTimer(){
         timerMapper.deleteAllTimer();
+    }
+
+    public void deleteTodayTimer(){
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+        gc.set(Calendar.HOUR_OF_DAY,0);
+        gc.set(Calendar.MINUTE,0);
+        gc.set(Calendar.SECOND,0);
+        gc.set(Calendar.MILLISECOND,0);
+        Date begin = gc.getTime();
+        gc.add(Calendar.DAY_OF_YEAR,1);
+        Date end = gc.getTime();
+        timerMapper.deleteTimerByTime(begin,end);
     }
 
     @Autowired
