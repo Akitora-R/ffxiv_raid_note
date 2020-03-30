@@ -415,6 +415,15 @@
                                             <h3 id="todayTime">123H</h3>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div>
+                                            <div class="col-sm-4">
+
+                                            </div>
+                                            <div class="col-sm-4"></div>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
 <#--                                    自动记点式,不太好用-->
 <#--                                    <div class="row">-->
 <#--                                        <div class="col-sm-3">-->

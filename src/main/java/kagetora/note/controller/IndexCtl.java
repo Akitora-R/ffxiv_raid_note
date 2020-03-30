@@ -80,7 +80,7 @@ public class IndexCtl {
     @ResponseBody
     @RequestMapping("/ajaxSaveTimer")
     public Object ajaxSaveTimer(String timerLogs) {
-        if (StringUtils.isEmpty(timerLogs)) {
+        if (timerLogs.isEmpty()) {
             return false;
         }
         Timer[] timers = null;
@@ -156,3 +156,4 @@ public class IndexCtl {
         this.timerService = timerService;
     }
 }
+//那么,谁是我的影子,我又是谁的影子
