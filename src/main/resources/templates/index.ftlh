@@ -14,6 +14,7 @@
 <#--<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
 <script src="myJS/charts.js"></script>
 <script src="myJS/timer.js"></script>
+<script src="myJS/progress.js"></script>
 <style>
     .btn {
         margin: 5px;
@@ -460,7 +461,21 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="manage-progress" role="tabpanel" aria-labelledby="manage-progress-tab">
-
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label for="progress">进度</label>
+                                            <select class="form-control" id="progress">
+                                                <#list allPhase as p>
+                                                    <option value="${p.id}">${p.detail}</option>
+                                                </#list>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="btn btn-primary btn-block" onclick="saveProgress()">保存</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="manage-player" role="tabpanel" aria-labelledby="manage-player-tab">
                                     <div class="row">

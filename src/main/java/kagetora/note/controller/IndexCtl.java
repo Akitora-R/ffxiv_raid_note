@@ -8,6 +8,7 @@ import kagetora.note.entity.Player;
 import kagetora.note.entity.Timer;
 import kagetora.note.service.MistakeService;
 import kagetora.note.service.PlayerService;
+import kagetora.note.service.ProgressService;
 import kagetora.note.service.TimerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class IndexCtl {
     private PlayerService playerService;
     private MistakeService mistakeService;
     private TimerService timerService;
+    private ProgressService progressService;
 
     @RequestMapping("/")
     public String index(Model model) throws JsonProcessingException {
@@ -36,6 +38,7 @@ public class IndexCtl {
         model.addAttribute("totalPoint", playerService.getTotalPoint());
         model.addAttribute("totalTimeMill", timerService.getTotalMillisecond().toString());
         model.addAttribute("todayTimeMill", timerService.getTodayMillisecond().toString());
+        model.addAttribute("allPhase", progressService.getAllPhases());
         model.addAttribute("currRaid", "绝亚历山大");
         return "index";
     }
@@ -159,10 +162,11 @@ public class IndexCtl {
     }
 
     @Autowired
-    public IndexCtl(PlayerService playerService, MistakeService mistakeService, TimerService timerService) {
+    public IndexCtl(PlayerService playerService, MistakeService mistakeService, TimerService timerService, ProgressService progressService) {
         this.playerService = playerService;
         this.mistakeService = mistakeService;
         this.timerService = timerService;
+        this.progressService = progressService;
     }
 }
 //那么,谁是我的影子,我又是谁的影子

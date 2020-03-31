@@ -28,11 +28,15 @@ function timerReset() {
 }
 
 function timerSave() {
-    timerEndPoint = new Date();
-    timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
-    timerStartPoint = undefined;
-    timerEndPoint = undefined;
-    clearInterval(todayTimeInterval);
+    if (timerStartPoint !== undefined){
+        timerEndPoint = new Date();
+        timerLogs.push({begin: timerStartPoint.getTime(), end: timerEndPoint.getTime()});
+        timerStartPoint = undefined;
+        timerEndPoint = undefined;
+        clearInterval(todayTimeInterval);
+    }else if (timerLogs.length < 1){
+        return
+    }
     $.ajax({
         type: "POST",
         url: "ajaxSaveTimer",
@@ -40,6 +44,7 @@ function timerSave() {
         dataType: "json",
         success: function (resp) {
             totalTimeMill = resp.total;
+            // noinspection JSUnresolvedVariable
             todayTimeMill = resp.today;
             timerLogs = [];
             timerReset();
@@ -92,13 +97,16 @@ function switchBtn(state) {
 }
 
 function manualSetTime() {
+    let hourIn=$("#hourIn");
+    let minIn=$("#minIn");
     $.ajax({
         type: "POST",
         url: "ajaxManualSaveTimer",
-        data: {hour: $("#hourIn").val(),min:$("#minIn").val()},
+        data: {hour: hourIn.val(),min:minIn.val()},
         dataType: "json",
         success: function (resp) {
             totalTimeMill = resp.total;
+            // noinspection JSUnresolvedVariable
             todayTimeMill = resp.today;
             timerLogs = [];
             timerReset();
