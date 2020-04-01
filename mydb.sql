@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 31/03/2020 18:01:49
+ Date: 01/04/2020 18:10:15
 */
 
 SET NAMES utf8mb4;
@@ -35,12 +35,6 @@ CREATE TABLE `mistake`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of mistake
--- ----------------------------
-INSERT INTO `mistake` VALUES (3, 6, 2, 0, 0, 0, '2020-03-08 20:44:56', '8走慢', NULL);
-INSERT INTO `mistake` VALUES (4, 4, 0, 2, 0, 0, '2020-03-08 22:08:21', '接毒晚了', NULL);
-
--- ----------------------------
 -- Table structure for phase
 -- ----------------------------
 DROP TABLE IF EXISTS `phase`;
@@ -50,7 +44,7 @@ CREATE TABLE `phase`  (
   `point` int(7) NULL DEFAULT NULL,
   `detail` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of phase
@@ -60,7 +54,7 @@ INSERT INTO `phase` VALUES (2, 1, 2, '小怪');
 INSERT INTO `phase` VALUES (3, 1, 3, '第二次倾泻');
 INSERT INTO `phase` VALUES (4, 1, 4, '窒息');
 INSERT INTO `phase` VALUES (5, 1, 5, '第三次倾泻');
-INSERT INTO `phase` VALUES (6, 1, 6, '狂暴');
+INSERT INTO `phase` VALUES (6, 1, 6, '水基佬狂暴');
 INSERT INTO `phase` VALUES (7, 1, 7, '麻将');
 INSERT INTO `phase` VALUES (8, 2, 1, '飞盘光子');
 INSERT INTO `phase` VALUES (9, 2, 2, '第一次水雷');
@@ -70,13 +64,13 @@ INSERT INTO `phase` VALUES (12, 2, 5, '等离子盾');
 INSERT INTO `phase` VALUES (13, 2, 6, '第三次水雷');
 INSERT INTO `phase` VALUES (14, 2, 7, '排队');
 INSERT INTO `phase` VALUES (15, 2, 8, '超级跳+喷火');
-INSERT INTO `phase` VALUES (16, 2, 9, '狂暴');
+INSERT INTO `phase` VALUES (16, 2, 9, '飞机/正义狂暴');
 INSERT INTO `phase` VALUES (17, 3, 1, '0.5运');
 INSERT INTO `phase` VALUES (18, 3, 2, '1运');
 INSERT INTO `phase` VALUES (19, 3, 3, '中场死刑');
 INSERT INTO `phase` VALUES (20, 3, 4, '2运');
 INSERT INTO `phase` VALUES (21, 3, 5, '飞机正义');
-INSERT INTO `phase` VALUES (22, 3, 6, '狂暴');
+INSERT INTO `phase` VALUES (22, 3, 6, '亚历山大狂暴');
 INSERT INTO `phase` VALUES (23, 4, 1, '0.5测');
 INSERT INTO `phase` VALUES (24, 4, 2, '分散分摊');
 INSERT INTO `phase` VALUES (25, 4, 3, '1测');
@@ -84,7 +78,7 @@ INSERT INTO `phase` VALUES (26, 4, 4, '中场死刑');
 INSERT INTO `phase` VALUES (27, 4, 5, '2测');
 INSERT INTO `phase` VALUES (28, 4, 6, '审判1');
 INSERT INTO `phase` VALUES (29, 4, 7, '审判2');
-INSERT INTO `phase` VALUES (30, 4, 8, '狂暴');
+INSERT INTO `phase` VALUES (30, 4, 8, '完美亚历山大狂暴');
 
 -- ----------------------------
 -- Table structure for player
@@ -101,12 +95,12 @@ CREATE TABLE `player`  (
 -- ----------------------------
 -- Records of player
 -- ----------------------------
-INSERT INTO `player` VALUES (1, 'BLM', 'D1', 1);
+INSERT INTO `player` VALUES (1, 'D1', 'D1', 1);
 INSERT INTO `player` VALUES (2, 'D2', 'D2', 1);
 INSERT INTO `player` VALUES (3, 'D3', 'D3', 1);
-INSERT INTO `player` VALUES (4, '大島虎彦', 'D4', 1);
-INSERT INTO `player` VALUES (5, 'WHM', 'H1', 1);
-INSERT INTO `player` VALUES (6, 'SCH', 'H2', 1);
+INSERT INTO `player` VALUES (4, 'D4', 'D4', 1);
+INSERT INTO `player` VALUES (5, 'H1', 'H1', 1);
+INSERT INTO `player` VALUES (6, 'H2', 'H2', 1);
 INSERT INTO `player` VALUES (7, 'T1', 'T1', 1);
 INSERT INTO `player` VALUES (8, 'T2', 'T2', 1);
 
@@ -119,7 +113,7 @@ CREATE TABLE `progress`  (
   `progress` int(7) NULL DEFAULT NULL,
   `date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for timer
@@ -131,11 +125,5 @@ CREATE TABLE `timer`  (
   `end` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of timer
--- ----------------------------
-INSERT INTO `timer` VALUES (3, '2020-03-08 19:34:48', '2020-03-08 21:34:31');
-INSERT INTO `timer` VALUES (4, '2020-03-08 22:00:54', '2020-03-08 23:09:56');
 
 SET FOREIGN_KEY_CHECKS = 1;
