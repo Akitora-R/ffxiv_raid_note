@@ -6,7 +6,8 @@ function saveProgress() {
         data: {progress:progressSelect.val()},
         dataType: "json",
         success: function (resp) {
-
+            // noinspection JSUnresolvedVariable
+            $("#currProgress").text(resp.text);
         }
     });
 }

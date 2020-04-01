@@ -167,7 +167,6 @@ function setDayStackChartData() {
             let temp=[];
             $.each(resp,function (i,v) {
                 let date=new Date(v.date);
-                console.log(date);
                 temp.push(date.getMonth()+'-'+date.getDay());
             });
             chart.chartSetting.xAxis=[

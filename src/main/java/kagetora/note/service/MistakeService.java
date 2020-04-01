@@ -14,8 +14,8 @@ public class MistakeService {
     private MistakeMapper mistakeMapper;
 
     @Transactional
-    public int insertMistake(Mistake mistake){
-        return mistakeMapper.insertMistake(mistake);
+    public void insertMistake(Mistake mistake){
+        mistakeMapper.insertMistake(mistake);
     }
 
     public List<Mistake> selectMistakeByPlayer(Player player){
@@ -23,14 +23,18 @@ public class MistakeService {
     }
 
     @Transactional
-    public int deleteById(int id){
-        return this.mistakeMapper.deleteById(id);
+    public void deleteById(int id){
+        this.mistakeMapper.deleteById(id);
     }
 
     @Transactional
-    public int invalidateAllMis(){
-        //todo
-        return 0;
+    public void invalidateById(int id){
+        mistakeMapper.invalidateMistakeByID(id);
+    }
+
+    @Transactional
+    public void invalidateAllMis(){
+        mistakeMapper.invalidateAllMistake();
     }
 
     @Autowired

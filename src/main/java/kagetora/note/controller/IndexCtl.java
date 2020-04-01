@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kagetora.note.entity.Mistake;
 import kagetora.note.entity.Player;
+import kagetora.note.entity.Progress;
 import kagetora.note.entity.Timer;
 import kagetora.note.service.MistakeService;
 import kagetora.note.service.PlayerService;
@@ -19,6 +20,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Controller
@@ -40,6 +43,7 @@ public class IndexCtl {
         model.addAttribute("todayTimeMill", timerService.getTodayMillisecond().toString());
         model.addAttribute("allPhase", progressService.getAllPhases());
         model.addAttribute("currRaid", "绝亚历山大");
+        model.addAttribute("currProgress",progressService.getProgressStatement());
         return "index";
     }
 
@@ -100,7 +104,7 @@ public class IndexCtl {
     @ResponseBody
     @RequestMapping("/ajaxDeleteMis")
     public Object ajaxDeleteMis(int id) {
-        mistakeService.deleteById(id);
+        mistakeService.invalidateById(id);
         return true;
     }
 
@@ -152,13 +156,17 @@ public class IndexCtl {
     @ResponseBody
     @RequestMapping("/ajaxManualSaveTimer")
     public Object ajaxManualSaveTimer(Integer hour,Integer min){
-        HashMap<String, Object> ret = new HashMap<>();
         timerService.deleteTodayTimer();
         Date begin = new Date(System.currentTimeMillis() - (hour == null ? 0 : hour) * 3600 * 1000 - (min == null ? 0 : min) * 60 * 1000);
         timerService.insertTimer(new Timer(null,begin,new Date()));
-        ret.put("today",timerService.getTodayMillisecond());
-        ret.put("total",timerService.getTotalMillisecond());
-        return ret;
+        return Map.of("today",timerService.getTodayMillisecond(),"total",timerService.getTotalMillisecond());
+    }
+
+    @ResponseBody
+    @RequestMapping("/ajaxSaveProgress")
+    public Object ajaxSaveProgress(Integer progress){
+        progressService.setProgress(new Progress(null,progress,new Date()));
+        return Map.of("text",progressService.getProgressStatement());
     }
 
     @Autowired

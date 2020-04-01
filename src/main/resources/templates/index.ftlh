@@ -315,7 +315,7 @@
 
                 <div class="card bg-success shadow" style="color: aliceblue;">
                     <div class="card-body">
-                        <h3>20% (水雷)</h3>
+                        <h3 id="currProgress">${currProgress}</h3>
                         <i class="material-icons">
                             golf_course
                         </i>
